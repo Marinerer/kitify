@@ -1,0 +1,33 @@
+{
+	"compilerOptions": {
+		"target": "ESNext",
+		"useDefineForClassFields": true,
+		"lib": ["ESNext", "DOM", "DOM.Iterable"],
+		"module": "ESNext",
+		"skipLibCheck": true,
+		"types": ["node", "jest"],
+		"resolveJsonModule": true,
+
+		/* Bundler mode */
+		"moduleResolution": "bundler",
+		"isolatedModules": true,
+		"esModuleInterop": true,
+		"moduleDetection": "force",
+		"noEmit": true,
+		"jsx": "react-jsx",
+
+		/* Linting */
+		"strict": true,
+		"noUnusedLocals": true,
+		"noUnusedParameters": true,
+		"noFallthroughCasesInSwitch": true,
+
+		// "declaration": true,
+		// "declarationDir": "./dist",
+		// "emitDeclarationOnly": true
+		"baseUrl": "."
+		// "outDir": "./dist",
+	},
+	// "include": ["src"],
+	"exclude": ["node_modules", "**/*.test.ts"]
+}
