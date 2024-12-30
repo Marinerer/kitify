@@ -14,18 +14,6 @@
       "module": "./dist/index.mjs",
       "require": "./dist/index.js"
     },
-    "./type": {
-      "types": "./dist/type.d.ts",
-      "import": "./dist/type.mjs",
-      "module": "./dist/type.mjs",
-      "require": "./dist/type.js"
-    },
-    "./isType": {
-      "types": "./dist/isType.d.ts",
-      "import": "./dist/isType.mjs",
-      "module": "./dist/isType.mjs",
-      "require": "./dist/isType.js"
-    },
     "./assign": {
       "types": "./dist/assign.d.ts",
       "import": "./dist/assign.mjs",
@@ -61,6 +49,24 @@
       "import": "./dist/detectMouseDirection.mjs",
       "module": "./dist/detectMouseDirection.mjs",
       "require": "./dist/detectMouseDirection.js"
+    },
+    "./isType": {
+      "types": "./dist/isType.d.ts",
+      "import": "./dist/isType.mjs",
+      "module": "./dist/isType.mjs",
+      "require": "./dist/isType.js"
+    },
+    "./listToTree": {
+      "types": "./dist/listToTree.d.ts",
+      "import": "./dist/listToTree.mjs",
+      "module": "./dist/listToTree.mjs",
+      "require": "./dist/listToTree.js"
+    },
+    "./type": {
+      "types": "./dist/type.d.ts",
+      "import": "./dist/type.mjs",
+      "module": "./dist/type.mjs",
+      "require": "./dist/type.js"
     },
     "./*": "./dist/*"
   },

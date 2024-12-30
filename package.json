@@ -6,7 +6,7 @@
     "format-check": "prettier --check --cache .",
     "build": "pnpm -r --filter kitify run build",
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
-    "bump": "bumpp lib/core/package.json",
+    "bump": "bumpp core/package.json",
     "publish": "pnpm -r --filter kitify publish --no-git-checks",
     "preinstall": "npx only-allow pnpm",
     "postinstall": "simple-git-hooks"

@@ -7,13 +7,13 @@
 [![size][bundlephobia-image]](https://bundlephobia.com/package/kitify)
 [![browsers](https://img.shields.io/badge/Browser-IE11-brightgreen?style=flat-square)][github-url]
 
-[github-url]: https://github.com/Marinerer/jotter/blob/main/libs/kitify
+[github-url]: https://github.com/Marinerer/kitify
 [npm-url]: https://www.npmjs.com/package/kitify
 [npm-image]: https://img.shields.io/npm/v/kitify?style=flat-square
-[github-action-image]: https://img.shields.io/github/actions/workflow/status/Marinerer/jotter/release.yml?style=flat-square
-[github-action-url]: https://github.com/Marinerer/jotter/actions/workflows/release.yml
-[codecov-image]: https://codecov.io/gh/Marinerer/jotter/graph/badge.svg?token=G7QXEHCEXW
-[codecov-url]: https://codecov.io/gh/Marinerer/jotter
+[github-action-image]: https://img.shields.io/github/actions/workflow/status/Marinerer/kitify/release.yml?style=flat-square
+[github-action-url]: https://github.com/Marinerer/kitify/actions/workflows/release.yml
+[codecov-image]: https://codecov.io/gh/Marinerer/kitify/graph/badge.svg?token=MILBKA1OO7
+[codecov-url]: https://codecov.io/gh/Marinerer/kitify
 [downloads-image]: https://img.shields.io/npm/dm/kitify?style=flat-square
 [bundlephobia-image]: https://img.shields.io/bundlephobia/minzip/kitify?style=flat-square
 
@@ -102,4 +102,4 @@ MIT License
 
 ## Contributing
 
-Contributions are welcome! Please feel free to submit a [Pull Request](https://github.com/Marinerer/jotter/pulls).
+Contributions are welcome! Please feel free to submit a [Pull Request](https://github.com/Marinerer/kitify/pulls).
