@@ -1,0 +1,17 @@
+{
+	"npm.packageManager": "pnpm",
+	"cSpell.ignoreWords": ["cjs", "esm", "iife", "preinstall", "nocheck", "kitify", "bumpp"],
+	"editor.formatOnSave": true,
+	"editor.defaultFormatter": "esbenp.prettier-vscode",
+	"editor.quickSuggestions": {
+		"other": "on",
+		"comments": "on",
+		"strings": "on"
+	},
+	"[ignore]": {
+		"editor.defaultFormatter": "foxundermoon.shell-format"
+	},
+	"[properties]": {
+		"editor.defaultFormatter": "foxundermoon.shell-format"
+	}
+}
