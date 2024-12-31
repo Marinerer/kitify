@@ -48,7 +48,7 @@ function cloneSymbol(sym: symbol): symbol {
  *
  * @warning 对于数据量比较大的对象，可能会出现递归栈溢出。建议其他方案，比如 `cloneLoop` 或 `cloneJSON`。
  */
-function deepClone<T>(target: T, hash = new WeakMap()): T {
+function cloneDeep<T>(target: T, hash = new WeakMap()): T {
 	// 处理原始类型
 	if (target === null || typeof target !== 'object') {
 		return target
@@ -66,7 +66,7 @@ function deepClone<T>(target: T, hash = new WeakMap()): T {
 		hash.set(target, result)
 
 		for (let i = 0, len = target.length; i < len; i++) {
-			result[i] = deepClone(target[i], hash)
+			result[i] = cloneDeep(target[i], hash)
 		}
 
 		return result as any
@@ -96,7 +96,7 @@ function deepClone<T>(target: T, hash = new WeakMap()): T {
 
 	// 处理 DataView
 	if (target instanceof DataView) {
-		const buffer = deepClone(target.buffer)
+		const buffer = cloneDeep(target.buffer)
 		return new DataView(buffer, target.byteOffset, target.byteLength) as any
 	}
 
@@ -107,7 +107,7 @@ function deepClone<T>(target: T, hash = new WeakMap()): T {
 
 		target.forEach((value, key) => {
 			// 对 Map 的 key 和 value 都进行深度克隆
-			result.set(deepClone(key, hash), deepClone(value, hash))
+			result.set(cloneDeep(key, hash), cloneDeep(value, hash))
 		})
 
 		return result as any
@@ -118,7 +118,7 @@ function deepClone<T>(target: T, hash = new WeakMap()): T {
 		hash.set(target, result)
 
 		target.forEach((value) => {
-			result.add(deepClone(value, hash))
+			result.add(cloneDeep(value, hash))
 		})
 
 		return result as any
@@ -144,7 +144,7 @@ function deepClone<T>(target: T, hash = new WeakMap()): T {
 		// 使用 Object.defineProperties 保持属性描述符
 		const descriptors = props.reduce((acc, prop) => {
 			const descriptor = Object.getOwnPropertyDescriptor(target, prop)!
-			descriptor.value = deepClone(descriptor.value, hash)
+			descriptor.value = cloneDeep(descriptor.value, hash)
 			acc[prop] = descriptor
 			return acc
 		}, {} as any)
@@ -156,4 +156,4 @@ function deepClone<T>(target: T, hash = new WeakMap()): T {
 	return target
 }
 
-export default deepClone
+export default cloneDeep
