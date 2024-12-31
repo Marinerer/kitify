@@ -1,5 +1,19 @@
 # kitify
 
+## v0.4.1
+
+### &nbsp;&nbsp;&nbsp;🎉 Features
+
+- Add unit tests for listToTree function &nbsp;-&nbsp; by **Mariner** [<samp>(d6959)</samp>](https://github.com/Marinerer/kitify/commit/d69599f)
+- Add treeToList utility with tests and documentation &nbsp;-&nbsp; by **Mariner** [<samp>(96f96)</samp>](https://github.com/Marinerer/kitify/commit/96f96d5)
+
+### &nbsp;&nbsp;&nbsp;♻️ Code Refactoring
+
+- Update core default module exports and functions &nbsp;-&nbsp; by **Mariner** [<samp>(30668)</samp>](https://github.com/Marinerer/kitify/commit/3066888)
+
+##### &nbsp;&nbsp;&nbsp;&nbsp;[View changes on GitHub](https://github.com/Marinerer/kitify/compare/v0.4.0...v0.4.1)
+
+
 ## v0.4.0
 
 ### &nbsp;&nbsp;&nbsp;🎉 Features
