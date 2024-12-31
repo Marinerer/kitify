@@ -14,7 +14,7 @@ import listToTree from 'kitify/listToTree'
 
 ## API
 
-### listToTree(list, options = {}) -> tree
+### listToTree
 
 Convert a list of objects to a tree structure.
 
@@ -47,3 +47,21 @@ listToTree(list)
 
 // [{"id":1,"name":"a","parentId":0,"children":[{"id":2,"name":"b","parentId":1,"children":[{"id":4,"name":"d","parentId":2,"children":[]},{"id":5,"name":"e","parentId":2,"children":[]}]},{"id":3,"name":"c","parentId":1,"children":[]}]}]
 ```
+
+### treeTolist
+
+Convert a tree structure to a list of objects.
+
+将树形结构转换为对象列表。
+
+```ts
+treeToList(tree: T[] | T, options?: OptionsM<T, R>): R[];
+```
+
+#### Parameters
+
+- `tree`: The tree structure to convert.
+- `options`: Optional configuration options.
+  - `childrenKey`: The key for the children array. Default is `'children'`.
+  - `removeChildren`: Whether to remove the children key from the transformed node. Default is `true`.
+  - `transform`: A function to transform each node in the tree. Default is `(node) => node`.
