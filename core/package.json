@@ -1,7 +1,7 @@
 {
 	"name": "kitify",
 	"version": "0.4.0",
-	"description": "kitify is a JavaScript utility library that provides a whole mess of useful helper functions and supports modularity.",
+	"description": "A JavaScript utility library that provides a whole mess of useful helper functions and supports modularity.",
 	"main": "dist/index.js",
 	"module": "dist/index.mjs",
 	"unpkg": "dist/index.min.js",
@@ -13,12 +13,6 @@
 			"import": "./dist/index.mjs",
 			"module": "./dist/index.mjs",
 			"require": "./dist/index.js"
-		},
-		"./assign": {
-			"types": "./dist/assign.d.ts",
-			"import": "./dist/assign.mjs",
-			"module": "./dist/assign.mjs",
-			"require": "./dist/assign.js"
 		},
 		"./clone": {
 			"types": "./dist/clone.d.ts",
@@ -32,29 +26,23 @@
 			"module": "./dist/cloneDeep.mjs",
 			"require": "./dist/cloneDeep.js"
 		},
-		"./cloneLoop": {
-			"types": "./dist/cloneLoop.d.ts",
-			"import": "./dist/cloneLoop.mjs",
-			"module": "./dist/cloneLoop.mjs",
-			"require": "./dist/cloneLoop.js"
-		},
 		"./cloneJSON": {
 			"types": "./dist/cloneJSON.d.ts",
 			"import": "./dist/cloneJSON.mjs",
 			"module": "./dist/cloneJSON.mjs",
 			"require": "./dist/cloneJSON.js"
 		},
+		"./cloneLoop": {
+			"types": "./dist/cloneLoop.d.ts",
+			"import": "./dist/cloneLoop.mjs",
+			"module": "./dist/cloneLoop.mjs",
+			"require": "./dist/cloneLoop.js"
+		},
 		"./detectMouseDirection": {
 			"types": "./dist/detectMouseDirection.d.ts",
 			"import": "./dist/detectMouseDirection.mjs",
 			"module": "./dist/detectMouseDirection.mjs",
 			"require": "./dist/detectMouseDirection.js"
-		},
-		"./isType": {
-			"types": "./dist/isType.d.ts",
-			"import": "./dist/isType.mjs",
-			"module": "./dist/isType.mjs",
-			"require": "./dist/isType.js"
 		},
 		"./listToTree": {
 			"types": "./dist/listToTree.d.ts",
@@ -68,13 +56,26 @@
 			"module": "./dist/treeToList.mjs",
 			"require": "./dist/treeToList.js"
 		},
+		"./assign": {
+			"types": "./dist/assign.d.ts",
+			"import": "./dist/assign.mjs",
+			"module": "./dist/assign.mjs",
+			"require": "./dist/assign.js"
+		},
+		"./isType": {
+			"types": "./dist/isType.d.ts",
+			"import": "./dist/isType.mjs",
+			"module": "./dist/isType.mjs",
+			"require": "./dist/isType.js"
+		},
 		"./type": {
 			"types": "./dist/type.d.ts",
 			"import": "./dist/type.mjs",
 			"module": "./dist/type.mjs",
 			"require": "./dist/type.js"
 		},
-		"./*": "./dist/*"
+		"./package.json": "./package.json",
+		"./*": "./*"
 	},
 	"files": [
 		"dist",
@@ -86,9 +87,11 @@
 	"keywords": [
 		"kitify",
 		"kit",
-		"utility",
+		"util",
 		"functions",
-		"lodash"
+		"modules",
+		"lodash",
+		"utility"
 	],
 	"publishConfig": {
 		"access": "public",
