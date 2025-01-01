@@ -8,7 +8,8 @@ export const isUndefined = (value: any) => value === void 0
 export const isNull = (value: any) => value === null
 export const isSymbol = (value: any) => typeof value === 'symbol'
 export const isBigInt = (value: any) => typeof value === 'bigint'
-export const isObject = (value: any) => isType(value, 'object') as boolean
+export const isObject = (value: any) => typeof value === 'object' && value !== null
+export const isPlainObject = (value: any) => isType(value, 'object') as boolean
 
 export const isNil = (value: any) => value === null || value === void 0
 
