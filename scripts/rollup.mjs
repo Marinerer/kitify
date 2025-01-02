@@ -17,6 +17,9 @@ import { tag, colors } from 'diy-log'
  * @returns {Promise}
  */
 async function build(config, { banner, pkg }) {
+	const startTime = Date.now()
+	// log(colors.blue(`[${config.name}] `) + 'Build start ...')
+
 	const { input, filename } = config
 
 	const buildOptions = defineConfig({
@@ -44,6 +47,7 @@ async function build(config, { banner, pkg }) {
 				sourcemap: true,
 			},
 		],
+		cache: true,
 	})
 	const dtsOptions = defineConfig({
 		input,
@@ -54,15 +58,20 @@ async function build(config, { banner, pkg }) {
 		},
 	})
 
-	const bundle = await rollup(buildOptions)
-	await Promise.all(buildOptions.output.map((options) => bundle.write(options)))
+	try {
+		const bundle = await rollup(buildOptions)
+		await Promise.all(buildOptions.output.map((options) => bundle.write(options)))
 
-	if (config.dts !== false) {
-		const dtsBundle = await rollup(dtsOptions)
-		await dtsBundle.write(dtsOptions.output)
+		if (config.dts !== false) {
+			const dtsBundle = await rollup(dtsOptions)
+			await dtsBundle.write(dtsOptions.output)
+		}
+
+		tag.success(colors.blue(`[${config.name}] `) + `Build complete. (${Date.now() - startTime}ms)`)
+	} catch (error) {
+		tag.error(colors.red(`[${config.name}] `) + 'Build failed: ' + error.message)
+		throw error // 重新抛出错误以便外部处理
 	}
-
-	tag.success(colors.blue(`[${config.name}] `) + 'Build complete.')
 }
 
 export { build as rollupBuild }

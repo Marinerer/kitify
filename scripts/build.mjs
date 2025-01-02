@@ -53,32 +53,37 @@ function updatePackage(pkg, libs) {
 }
 
 async function buildAll() {
-	await rimraf('dist')
+	try {
+		await rimraf('dist')
 
-	const startTime = Date.now()
-	const pkg = await readJSON('package.json')
-	const banner = generateBanner(pkg)
+		const startTime = Date.now()
+		const pkg = await readJSON('package.json')
+		const banner = generateBanner(pkg)
 
-	const files = await fg(['src/index.ts', 'src/*/*.ts'])
-	for (const file of files) {
-		const filename = file.split('/').pop().replace('.ts', '')
-		const name = filename === 'index' ? pkg.name : filename
-		await rollupBuild({ name, input: file, filename: `dist/${filename}` }, { banner, pkg })
+		const files = await fg(['src/index.ts', 'src/*/*.ts', '!src/**/_*.ts'])
+		for (const file of files) {
+			const filename = file.split('/').pop().replace('.ts', '')
+			const name = filename === 'index' ? pkg.name : filename
+			await rollupBuild({ name, input: file, filename: `dist/${filename}` }, { banner, pkg })
+		}
+
+		// update package.json
+		await fs.writeFile('package.json', JSON.stringify(updatePackage(pkg, files), null, 2))
+
+		// copy README.md and docs
+		await fs.cp('../README.md', './README.md', { force: true })
+		if (args.docs) {
+			await fs.cp('../docs', 'docs', { recursive: true })
+		}
+
+		const endTime = Date.now()
+		console.log(
+			colors.blue(`[${pkg.name}] `) + `Build success in ${endTime - startTime}ms. ${symbols.done}`
+		)
+	} catch (error) {
+		console.error(error)
+		process.exit(1)
 	}
-
-	// update package.json
-	await fs.writeFile('package.json', JSON.stringify(updatePackage(pkg, files), null, 2))
-
-	// copy README.md and docs
-	await fs.cp('../README.md', './README.md', { force: true })
-	if (args.docs) {
-		await fs.cp('../docs', 'docs', { recursive: true })
-	}
-
-	const endTime = Date.now()
-	console.log(
-		colors.blue(`[${pkg.name}] `) + `Build success in ${endTime - startTime}ms. ${symbols.done}`
-	)
 }
 
 ;(async () => {
