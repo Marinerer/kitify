@@ -30,15 +30,14 @@ function isTypedArray(obj: any): obj is TypedArray {
  *
  * @warning `Object(Symbol.prototype.valueOf.call(testSymbol))` 是创建一个 Symbol 对象包装器，而不是一个新的 Symbol, 其值与原 Symbol 相同，但类型不同。
  */
-// @ts-ignore
-function cloneSymbol(sym: symbol): symbol {
+/* function cloneSymbol(sym: symbol): symbol {
 	// 对于全局 Symbol，创建一个新的全局 Symbol
 	if (Symbol.keyFor(sym)) {
 		return Symbol.for(Symbol.keyFor(sym)!)
 	}
 	// 对于普通 Symbol，创建一个新的普通 Symbol
 	return Symbol(sym.description)
-}
+} */
 
 /**
  * 使用递归方式实现深度克隆，支持各种常见数据类型.
