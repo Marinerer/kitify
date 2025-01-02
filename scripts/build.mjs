@@ -64,7 +64,10 @@ async function buildAll() {
 		for (const file of files) {
 			const filename = file.split('/').pop().replace('.ts', '')
 			const name = filename === 'index' ? pkg.name : filename
-			await rollupBuild({ name, input: file, filename: `dist/${filename}` }, { banner, pkg })
+			await rollupBuild(
+				{ name, input: file, filename: `dist/${filename}`, externalMode: 'all' },
+				{ banner, pkg }
+			)
 		}
 
 		// update package.json

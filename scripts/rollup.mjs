@@ -7,6 +7,29 @@ import terser from '@rollup/plugin-terser'
 import generateDts from 'rollup-plugin-dts'
 import { tag, colors } from 'diy-log'
 
+const createdExternal = (() => {
+	const externalMap = {
+		all(_, opts) {
+			return (id) => {
+				// 将第三方依赖和本地模块都设置为 external
+				return (
+					opts.dependencies.includes(id) ||
+					opts.peerDependencies.includes(id) ||
+					id.startsWith('./') ||
+					id.startsWith('../')
+				)
+			}
+		},
+		default(config) {
+			return config.external || []
+		},
+	}
+
+	return (config, options) => {
+		return externalMap[options.externalMode || config.externalMode || 'default'](config, options)
+	}
+})()
+
 /**
  * build
  *
@@ -21,11 +44,14 @@ async function build(config, { banner, pkg }) {
 	// log(colors.blue(`[${config.name}] `) + 'Build start ...')
 
 	const { input, filename } = config
+	const dependencies = Object.keys(pkg.dependencies || {})
+	const peerDependencies = Object.keys(pkg.peerDependencies || {})
 
+	// build esm/cjs bundle
 	const buildOptions = defineConfig({
 		input,
 		plugins: [nodeResolve(), commonjs(), json(), typescript()],
-		external: config.external || [],
+		external: createdExternal(config, { dependencies, peerDependencies }),
 		output: [
 			{
 				file: `${filename}.${pkg.type === 'module' ? 'js' : 'mjs'}`,
@@ -37,19 +63,33 @@ async function build(config, { banner, pkg }) {
 				format: 'cjs',
 				banner,
 			},
-			{
-				file: `${filename}.min.js`,
-				format: 'iife',
-				name: config.name,
-				banner,
-				plugins: [terser()],
-				globals: config.globals || {},
-				sourcemap: true,
-			},
 		],
 		cache: true,
 	})
-	const dtsOptions = defineConfig({
+
+	// build umd/iife bundle
+	const buildUmdOptions = defineConfig({
+		input,
+		plugins: [
+			nodeResolve(),
+			commonjs(),
+			json(),
+			typescript({ compilerOptions: { target: 'es5' } }),
+		],
+		external: createdExternal(config, { externalMode: 'default' }),
+		output: {
+			file: `${filename}.min.js`,
+			format: 'iife',
+			name: config.name,
+			banner,
+			plugins: [terser()],
+			globals: config.globals || {},
+			sourcemap: true,
+		},
+	})
+
+	// build .d.ts
+	const buildDtsOptions = defineConfig({
 		input,
 		plugins: [generateDts()],
 		output: {
@@ -62,9 +102,12 @@ async function build(config, { banner, pkg }) {
 		const bundle = await rollup(buildOptions)
 		await Promise.all(buildOptions.output.map((options) => bundle.write(options)))
 
+		const umdBundle = await rollup(buildUmdOptions)
+		await umdBundle.write(buildUmdOptions.output)
+
 		if (config.dts !== false) {
-			const dtsBundle = await rollup(dtsOptions)
-			await dtsBundle.write(dtsOptions.output)
+			const dtsBundle = await rollup(buildDtsOptions)
+			await dtsBundle.write(buildDtsOptions.output)
 		}
 
 		tag.success(colors.blue(`[${config.name}] `) + `Build complete. (${Date.now() - startTime}ms)`)
