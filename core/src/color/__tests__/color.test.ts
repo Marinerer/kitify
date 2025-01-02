@@ -4,15 +4,21 @@ import {
 	isHslColor,
 	hexToRgb,
 	rgbToHex,
-	colorToRGB,
-	alphaColor,
+	colorRGB,
+	setColorOpacity,
+	setColorBrightness,
 	darkenColor,
 	lightenColor,
 	isDarkColor,
 	isLightColor,
 	colorContrast,
+	mixColors,
+	colorComplementary,
 } from '../color'
 
+/**
+ * 验证颜色函数
+ */
 describe('Color Validation Functions', () => {
 	describe('isHexColor', () => {
 		test('should validate correct hex colors', () => {
@@ -66,6 +72,7 @@ describe('Color Validation Functions', () => {
 
 		test('should reject invalid hsl colors', () => {
 			expect(isHslColor('')).toBe(false)
+			expect(isHslColor(123 as any)).toBe(false)
 			expect(isHslColor('hsl(361, 0%, 0%)')).toBe(false)
 			expect(isHslColor('hsl(0, 101%, 0%)')).toBe(false)
 			expect(isHslColor('hsl(0, 0%, 101%)')).toBe(false)
@@ -75,6 +82,9 @@ describe('Color Validation Functions', () => {
 	})
 })
 
+/**
+ * 颜色转换函数
+ */
 describe('Color Conversion Functions', () => {
 	describe('hexToRgb', () => {
 		test('should convert valid hex colors to RGB', () => {
@@ -96,6 +106,9 @@ describe('Color Conversion Functions', () => {
 			expect(rgbToHex(0, 0, 0)).toBe('#000000')
 			expect(rgbToHex(255, 255, 255)).toBe('#ffffff')
 			expect(rgbToHex(123, 45, 67)).toBe('#7b2d43')
+			expect(rgbToHex([123, 45, 67])).toBe('#7b2d43')
+			expect(rgbToHex('rgb(123, 45, 67)')).toBe('#7b2d43')
+			expect(rgbToHex('rgba(123, 45, 67,0.5)')).toBe('#7b2d43')
 		})
 
 		test('should throw error for invalid RGB values', () => {
@@ -108,69 +121,90 @@ describe('Color Conversion Functions', () => {
 		})
 	})
 
-	describe('colorToRGB', () => {
+	describe('colorRGB', () => {
 		test('should convert hex colors to RGB', () => {
-			expect(colorToRGB('#000')).toEqual([0, 0, 0])
-			expect(colorToRGB('#fff')).toEqual([255, 255, 255])
+			expect(colorRGB('#000')).toEqual([0, 0, 0])
+			expect(colorRGB('#fff')).toEqual([255, 255, 255])
 		})
 
 		test('should parse RGB colors', () => {
-			expect(colorToRGB('rgb(0, 0, 0)')).toEqual([0, 0, 0])
-			expect(colorToRGB('rgb(255, 255, 255)')).toEqual([255, 255, 255])
+			expect(colorRGB('rgb(0, 0, 0)')).toEqual([0, 0, 0])
+			expect(colorRGB('rgb(255, 255, 255)')).toEqual([255, 255, 255])
 		})
 
 		test('should parse RGBA colors', () => {
-			expect(colorToRGB('rgba(0, 0, 0, 0)')).toEqual([0, 0, 0, 0])
-			expect(colorToRGB('rgba(255, 255, 255, 1)')).toEqual([255, 255, 255, 1])
-			expect(colorToRGB('rgba(123, 45, 67, 0.5)')).toEqual([123, 45, 67, 0.5])
+			expect(colorRGB('rgba(0, 0, 0, 0)')).toEqual([0, 0, 0, 0])
+			expect(colorRGB('rgba(255, 255, 255, 1)')).toEqual([255, 255, 255, 1])
+			expect(colorRGB('rgba(123, 45, 67, 0.5)')).toEqual([123, 45, 67, 0.5])
 		})
 
 		test('should throw error for invalid colors', () => {
-			expect(() => colorToRGB('')).toThrow(TypeError)
-			expect(() => colorToRGB('invalid')).toThrow(TypeError)
-			expect(() => colorToRGB('hsl(0, 0%, 0%)')).toThrow(TypeError)
+			expect(() => colorRGB('')).toThrow(TypeError)
+			expect(() => colorRGB('invalid')).toThrow(TypeError)
+			expect(() => colorRGB('hsl(0, 0%, 0%)')).toThrow(TypeError)
 		})
 	})
 })
 
+/**
+ * 颜色修改函数
+ */
 describe('Color Modification Functions', () => {
-	describe('alphaColor', () => {
+	describe('setColorOpacity', () => {
 		test('should add alpha value to colors', () => {
-			expect(alphaColor('#000', 0.5)).toBe('rgba(0, 0, 0, 0.5)')
-			expect(alphaColor('rgb(255, 255, 255)', 1)).toBe('rgba(255, 255, 255, 1)')
+			expect(setColorOpacity('#000', 0.5)).toBe('rgba(0, 0, 0, 0.5)')
+			expect(setColorOpacity('rgb(255, 255, 255)', 1)).toBe('rgba(255, 255, 255, 1)')
 		})
 
 		test('should throw error for invalid alpha values', () => {
-			expect(() => alphaColor('#000', -0.1)).toThrow(TypeError)
-			expect(() => alphaColor('#000', 1.1)).toThrow(TypeError)
+			expect(() => setColorOpacity('#000', -0.1)).toThrow(TypeError)
+			expect(() => setColorOpacity('#000', 1.1)).toThrow(TypeError)
+		})
+	})
+
+	describe('setColorBrightness', () => {
+		test('should throw error for invalid amount', () => {
+			expect(() => setColorBrightness('red', -2)).toThrow(TypeError)
+			expect(() => setColorBrightness('red', 2)).toThrow(TypeError)
+		})
+
+		test('should return correct brightened color', () => {
+			expect(setColorBrightness('#f00', 0)).toEqual('rgb(255, 0, 0)')
+			expect(setColorBrightness('rgb(255,0,0)', -0.5)).toEqual('rgb(128, 0, 0)')
+			expect(setColorBrightness('#f00', 0.5)).toEqual('rgb(255, 128, 128)')
 		})
 	})
 
 	describe('darkenColor', () => {
 		test('should darken colors correctly', () => {
 			expect(darkenColor('#fff', 0.5)).toBe('rgb(128, 128, 128)')
+			expect(darkenColor('#fff', -0.5)).toBe(darkenColor('#fff', 0.5))
 			expect(darkenColor('rgb(200, 200, 200)', 0.2)).toBe('rgb(160, 160, 160)')
 		})
 
 		test('should throw error for invalid amount values', () => {
-			expect(() => darkenColor('#000', -0.1)).toThrow(TypeError)
-			expect(() => darkenColor('#000', 1.1)).toThrow(TypeError)
+			expect(() => darkenColor('#000', -2)).toThrow(TypeError)
+			expect(() => darkenColor('#000', 2)).toThrow(TypeError)
 		})
 	})
 
 	describe('lightenColor', () => {
 		test('should lighten colors correctly', () => {
 			expect(lightenColor('#000', 0.5)).toBe('rgb(128, 128, 128)')
+			expect(lightenColor('#000', 0.5)).toBe(lightenColor('#000', -0.5))
 			expect(lightenColor('rgb(100, 100, 100)', 0.2)).toBe('rgb(131, 131, 131)')
 		})
 
 		test('should throw error for invalid amount values', () => {
-			expect(() => lightenColor('#000', -0.1)).toThrow(TypeError)
+			expect(() => lightenColor('#000', -1.1)).toThrow(TypeError)
 			expect(() => lightenColor('#000', 1.1)).toThrow(TypeError)
 		})
 	})
 })
 
+/**
+ * 颜色分析函数
+ */
 describe('Color Analysis Functions', () => {
 	describe('isDarkColor', () => {
 		test('should correctly identify dark colors', () => {
@@ -204,6 +238,7 @@ describe('Color Analysis Functions', () => {
 		test('should calculate correct contrast ratios', () => {
 			// 黑白对比度应接近 21:1
 			expect(colorContrast('#000', '#fff')).toBeCloseTo(21, 0)
+			expect(colorContrast('#fff', '#000')).toBeCloseTo(21, 0)
 			// 相同颜色对比度应为 1:1
 			expect(colorContrast('#fff', '#fff')).toBeCloseTo(1, 0)
 			// 灰色与白色的对比度应在中间范围
@@ -214,6 +249,44 @@ describe('Color Analysis Functions', () => {
 		test('should handle different color formats', () => {
 			expect(colorContrast('#000', 'rgb(255, 255, 255)')).toBeCloseTo(21, 0)
 			expect(colorContrast('rgb(0, 0, 0)', '#ffffff')).toBeCloseTo(21, 0)
+		})
+	})
+
+	describe('colorComplementary', () => {
+		test('should return the complementary color for a valid color', () => {
+			const complementaryColor = colorComplementary('rgb(100, 150, 200)')
+			expect(complementaryColor).toEqual('rgb(155, 105, 55)')
+		})
+
+		test('should handle invalid color format', () => {
+			expect(() => colorComplementary('invalidColor')).toThrow(TypeError)
+		})
+	})
+
+	describe('mixColors', () => {
+		it('should mix two colors with default weight', () => {
+			expect(mixColors('rgb(255, 0, 0)', 'rgb(0, 0, 255)')).toBe('rgb(128, 0, 128)')
+			expect(mixColors('#f00', '#00f')).toBe('rgb(128, 0, 128)')
+			expect(mixColors('#f00', 'rgb(0, 0, 255)')).toBe('rgb(128, 0, 128)')
+		})
+
+		it('should mix two colors with custom weight', () => {
+			expect(mixColors('rgb(255, 0, 0)', 'rgb(0, 0, 255)', 0.25)).toBe('rgb(64, 0, 191)')
+			expect(mixColors('rgb(255, 0, 0)', 'rgb(0, 0, 255)', 1)).toBe('rgb(255, 0, 0)')
+			expect(mixColors('rgb(255, 0, 0)', 'rgb(0, 0, 255)', 0)).toBe('rgb(0, 0, 255)')
+		})
+
+		it('should throw an error when weight is out of range', () => {
+			expect(() => mixColors('#fff', '#000', -0.1)).toThrow('Weight must be between 0 and 1')
+			expect(() => mixColors('#fff', '#000', 1.1)).toThrow('Weight must be between 0 and 1')
+		})
+
+		it('should handle hex color inputs', () => {
+			expect(mixColors('#ff0000', '#0000ff')).toBe('rgb(128, 0, 128)')
+		})
+
+		it('should handle invalid color inputs', () => {
+			expect(() => mixColors('red', 'blue')).toThrow(TypeError)
 		})
 	})
 })

@@ -14,5 +14,8 @@ export { default as cloneJSON } from './collection/cloneJSON'
 export { default as listToTree } from './data/listToTree'
 export { default as treeToList } from './data/treeToList'
 
+// color
+export * from './color/color'
+
 // dom
 export { default as detectMouseDirection } from './dom/detectMouseDirection'
