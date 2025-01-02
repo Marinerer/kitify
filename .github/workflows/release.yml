@@ -49,7 +49,7 @@ jobs:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
       - name: CI:Build
-        run: pnpm run build
+        run: pnpm run build --docs
 
       - name: Publish package to npm
         run: pnpm publish -r --filter kitify --access public --no-git-checks

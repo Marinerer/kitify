@@ -86,6 +86,7 @@ async function build(config, { banner, pkg }) {
 			globals: config.globals || {},
 			sourcemap: true,
 		},
+		cache: true,
 	})
 
 	// build .d.ts
@@ -96,19 +97,28 @@ async function build(config, { banner, pkg }) {
 			file: `${filename}.d.ts`,
 			format: 'es',
 		},
+		cache: true,
 	})
 
 	try {
-		const bundle = await rollup(buildOptions)
-		await Promise.all(buildOptions.output.map((options) => bundle.write(options)))
-
-		const umdBundle = await rollup(buildUmdOptions)
-		await umdBundle.write(buildUmdOptions.output)
-
+		//! 速度提升有限
+		const tasks = [
+			async () => {
+				const bundle = await rollup(buildOptions)
+				await Promise.all(buildOptions.output.map((options) => bundle.write(options)))
+			},
+			async () => {
+				const umdBundle = await rollup(buildUmdOptions)
+				await umdBundle.write(buildUmdOptions.output)
+			},
+		]
 		if (config.dts !== false) {
-			const dtsBundle = await rollup(buildDtsOptions)
-			await dtsBundle.write(buildDtsOptions.output)
+			tasks.push(async () => {
+				const dtsBundle = await rollup(buildDtsOptions)
+				await dtsBundle.write(buildDtsOptions.output)
+			})
 		}
+		await Promise.all(tasks.map((task) => task()))
 
 		tag.success(colors.blue(`[${config.name}] `) + `Build complete. (${Date.now() - startTime}ms)`)
 	} catch (error) {
