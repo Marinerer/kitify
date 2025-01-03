@@ -30,11 +30,14 @@ npm install kitify
 ## Usage
 
 ```js
-import { isType, isObject } from 'kitify'
+import { isType, clone } from 'kitify'
+// or
+import isType from 'kitify/isType'
+import clone from 'kitify/clone'
 
-isObject({}) // true
 isType(123) // 'number'
 isType('hello', 'string') // true
+clone({ a: 1, b: 2 }) // { a: 1, b: 2 }
 ```
 
 ## API

@@ -1,4 +1,4 @@
-# Color Utility Library
+# Color
 
 Processing `color` utility functions. providing functions for color validation, conversion, manipulation, and property retrieval.
 
