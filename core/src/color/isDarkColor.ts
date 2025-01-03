@@ -6,7 +6,7 @@ import colorToRGB from './colorRgb'
  * @returns
  */
 export default function isDarkColor(color: string): boolean {
-	const [r, g, b] = colorToRGB(color)
+	const [r, g, b] = colorToRGB(color, 'array')
 	// 根据公式计算 YIQ 值，用于判断颜色的亮度
 	const yiq = (r * 299 + g * 587 + b * 114) / 1000
 	// 如果 YIQ 值小于 128，则认为颜色是暗色

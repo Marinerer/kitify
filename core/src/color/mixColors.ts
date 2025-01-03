@@ -12,8 +12,8 @@ export default function mixColors(color1: string, color2: string, weight: number
 		throw new TypeError('Weight must be between 0 and 1')
 	}
 
-	const rgb1 = colorToRGB(color1)
-	const rgb2 = colorToRGB(color2)
+	const rgb1 = colorToRGB(color1, 'array')
+	const rgb2 = colorToRGB(color2, 'array')
 
 	const w1 = weight
 	const w2 = 1 - weight

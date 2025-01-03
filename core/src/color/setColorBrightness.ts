@@ -9,7 +9,7 @@ export default function setColorBrightness(color: string, amount: number): strin
 	if (amount < -1 || amount > 1) {
 		throw new TypeError('Amount must be between -1 and 1')
 	}
-	const rgb = colorToRGB(color)
+	const rgb = colorToRGB(color, 'array')
 	const brighten = (c: number): number =>
 		amount < 0 ? Math.round(c * (1 + amount)) : Math.round(c + (255 - c) * amount)
 

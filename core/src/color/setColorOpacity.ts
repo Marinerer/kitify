@@ -11,6 +11,6 @@ export default function setColorOpacity(color: string, opacity: number): string 
 		throw new TypeError('Invalid opacity value')
 	}
 
-	const [r, g, b] = colorToRGB(color)
+	const [r, g, b] = colorToRGB(color, 'array')
 	return `rgba(${r}, ${g}, ${b}, ${opacity})`
 }

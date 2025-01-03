@@ -1,7 +1,10 @@
+// @ts-nocheck
 import {
 	isHexColor,
 	isRgbColor,
 	isHslColor,
+	isDarkColor,
+	isLightColor,
 	hexToRgb,
 	rgbToHex,
 	colorRGB,
@@ -9,10 +12,9 @@ import {
 	setColorBrightness,
 	darkenColor,
 	lightenColor,
-	isDarkColor,
-	isLightColor,
-	colorContrast,
 	mixColors,
+	colorLuminance,
+	colorContrast,
 	colorComplementary,
 } from '../color'
 
@@ -80,6 +82,34 @@ describe('Color Validation Functions', () => {
 			expect(isHslColor('hsla(0, 0%, 0%, 1)')).toBe(false)
 		})
 	})
+
+	describe('isDarkColor', () => {
+		test('should correctly identify dark colors', () => {
+			expect(isDarkColor('#000')).toBe(true)
+			expect(isDarkColor('rgb(50, 50, 50)')).toBe(true)
+			expect(isDarkColor('#444')).toBe(true)
+		})
+
+		test('should correctly identify non-dark colors', () => {
+			expect(isDarkColor('#fff')).toBe(false)
+			expect(isDarkColor('rgb(200, 200, 200)')).toBe(false)
+			expect(isDarkColor('#ccc')).toBe(false)
+		})
+	})
+
+	describe('isLightColor', () => {
+		test('should correctly identify light colors', () => {
+			expect(isLightColor('#fff')).toBe(true)
+			expect(isLightColor('rgb(200, 200, 200)')).toBe(true)
+			expect(isLightColor('#ccc')).toBe(true)
+		})
+
+		test('should correctly identify non-light colors', () => {
+			expect(isLightColor('#000')).toBe(false)
+			expect(isLightColor('rgb(50, 50, 50)')).toBe(false)
+			expect(isLightColor('#444')).toBe(false)
+		})
+	})
 })
 
 /**
@@ -90,8 +120,8 @@ describe('Color Conversion Functions', () => {
 		test('should convert valid hex colors to RGB', () => {
 			expect(hexToRgb('#000')).toEqual([0, 0, 0])
 			expect(hexToRgb('#fff')).toEqual([255, 255, 255])
-			expect(hexToRgb('#000000')).toEqual([0, 0, 0])
-			expect(hexToRgb('#FFFFFF')).toEqual([255, 255, 255])
+			expect(hexToRgb('#000000', 'object')).toEqual({ r: 0, g: 0, b: 0 })
+			expect(hexToRgb('#FFFFFF', 'string')).toEqual('rgb(255, 255, 255)')
 		})
 
 		test('should throw error for invalid hex colors', () => {
@@ -124,17 +154,21 @@ describe('Color Conversion Functions', () => {
 	describe('colorRGB', () => {
 		test('should convert hex colors to RGB', () => {
 			expect(colorRGB('#000')).toEqual([0, 0, 0])
-			expect(colorRGB('#fff')).toEqual([255, 255, 255])
+			expect(colorRGB('#fff', 'array')).toEqual([255, 255, 255])
+			expect(colorRGB('#ff0000', 'object')).toEqual({ r: 255, g: 0, b: 0 })
+			expect(colorRGB('#00f', 'string')).toBe('rgb(0, 0, 255)')
 		})
 
 		test('should parse RGB colors', () => {
 			expect(colorRGB('rgb(0, 0, 0)')).toEqual([0, 0, 0])
-			expect(colorRGB('rgb(255, 255, 255)')).toEqual([255, 255, 255])
+			expect(colorRGB('rgb(255, 255, 255)', 'object')).toEqual({ r: 255, g: 255, b: 255 })
+			expect(colorRGB('rgb(255, 0, 0)', 'string')).toBe('rgb(255, 0, 0)')
 		})
 
 		test('should parse RGBA colors', () => {
-			expect(colorRGB('rgba(0, 0, 0, 0)')).toEqual([0, 0, 0, 0])
-			expect(colorRGB('rgba(255, 255, 255, 1)')).toEqual([255, 255, 255, 1])
+			expect(colorRGB('rgba(0, 0, 0, 0)', 'array')).toEqual([0, 0, 0, 0])
+			expect(colorRGB('rgba(0, 0, 0, 0)', 'string')).toBe('rgba(0, 0, 0, 0)')
+			expect(colorRGB('rgba(255, 255, 255, 1)', 'object')).toEqual({ r: 255, g: 255, b: 255, a: 1 })
 			expect(colorRGB('rgba(123, 45, 67, 0.5)')).toEqual([123, 45, 67, 0.5])
 		})
 
@@ -147,7 +181,7 @@ describe('Color Conversion Functions', () => {
 })
 
 /**
- * 颜色修改函数
+ * 颜色操作函数
  */
 describe('Color Modification Functions', () => {
 	describe('setColorOpacity', () => {
@@ -200,37 +234,48 @@ describe('Color Modification Functions', () => {
 			expect(() => lightenColor('#000', 1.1)).toThrow(TypeError)
 		})
 	})
+
+	describe('mixColors', () => {
+		it('should mix two colors with default weight', () => {
+			expect(mixColors('rgb(255, 0, 0)', 'rgb(0, 0, 255)')).toBe('rgb(128, 0, 128)')
+			expect(mixColors('#f00', '#00f')).toBe('rgb(128, 0, 128)')
+			expect(mixColors('#f00', 'rgb(0, 0, 255)')).toBe('rgb(128, 0, 128)')
+		})
+
+		it('should mix two colors with custom weight', () => {
+			expect(mixColors('rgb(255, 0, 0)', 'rgb(0, 0, 255)', 0.25)).toBe('rgb(64, 0, 191)')
+			expect(mixColors('rgb(255, 0, 0)', 'rgb(0, 0, 255)', 1)).toBe('rgb(255, 0, 0)')
+			expect(mixColors('rgb(255, 0, 0)', 'rgb(0, 0, 255)', 0)).toBe('rgb(0, 0, 255)')
+		})
+
+		it('should throw an error when weight is out of range', () => {
+			expect(() => mixColors('#fff', '#000', -0.1)).toThrow('Weight must be between 0 and 1')
+			expect(() => mixColors('#fff', '#000', 1.1)).toThrow('Weight must be between 0 and 1')
+		})
+
+		it('should handle hex color inputs', () => {
+			expect(mixColors('#ff0000', '#0000ff')).toBe('rgb(128, 0, 128)')
+		})
+
+		it('should handle invalid color inputs', () => {
+			expect(() => mixColors('red', 'blue')).toThrow(TypeError)
+		})
+	})
 })
 
 /**
  * 颜色分析函数
  */
 describe('Color Analysis Functions', () => {
-	describe('isDarkColor', () => {
-		test('should correctly identify dark colors', () => {
-			expect(isDarkColor('#000')).toBe(true)
-			expect(isDarkColor('rgb(50, 50, 50)')).toBe(true)
-			expect(isDarkColor('#444')).toBe(true)
-		})
-
-		test('should correctly identify non-dark colors', () => {
-			expect(isDarkColor('#fff')).toBe(false)
-			expect(isDarkColor('rgb(200, 200, 200)')).toBe(false)
-			expect(isDarkColor('#ccc')).toBe(false)
-		})
-	})
-
-	describe('isLightColor', () => {
-		test('should correctly identify light colors', () => {
-			expect(isLightColor('#fff')).toBe(true)
-			expect(isLightColor('rgb(200, 200, 200)')).toBe(true)
-			expect(isLightColor('#ccc')).toBe(true)
-		})
-
-		test('should correctly identify non-light colors', () => {
-			expect(isLightColor('#000')).toBe(false)
-			expect(isLightColor('rgb(50, 50, 50)')).toBe(false)
-			expect(isLightColor('#444')).toBe(false)
+	describe('colorLuminance', () => {
+		test('should return correct luminance', () => {
+			expect(colorLuminance('#000000')).toBeCloseTo(0)
+			expect(colorLuminance('#FFFFFF')).toBeCloseTo(1)
+			expect(colorLuminance('rgb(255,0,0)')).toBeCloseTo(0.2126)
+			expect(colorLuminance('rgb(0,255,0)')).toBeCloseTo(0.7152)
+			expect(colorLuminance('rgb(0,0,255)')).toBeCloseTo(0.0722)
+			expect(colorLuminance('#010101')).toBeCloseTo(0.004)
+			expect(colorLuminance('#FEFEFE')).toBeCloseTo(0.9911)
 		})
 	})
 
@@ -260,33 +305,6 @@ describe('Color Analysis Functions', () => {
 
 		test('should handle invalid color format', () => {
 			expect(() => colorComplementary('invalidColor')).toThrow(TypeError)
-		})
-	})
-
-	describe('mixColors', () => {
-		it('should mix two colors with default weight', () => {
-			expect(mixColors('rgb(255, 0, 0)', 'rgb(0, 0, 255)')).toBe('rgb(128, 0, 128)')
-			expect(mixColors('#f00', '#00f')).toBe('rgb(128, 0, 128)')
-			expect(mixColors('#f00', 'rgb(0, 0, 255)')).toBe('rgb(128, 0, 128)')
-		})
-
-		it('should mix two colors with custom weight', () => {
-			expect(mixColors('rgb(255, 0, 0)', 'rgb(0, 0, 255)', 0.25)).toBe('rgb(64, 0, 191)')
-			expect(mixColors('rgb(255, 0, 0)', 'rgb(0, 0, 255)', 1)).toBe('rgb(255, 0, 0)')
-			expect(mixColors('rgb(255, 0, 0)', 'rgb(0, 0, 255)', 0)).toBe('rgb(0, 0, 255)')
-		})
-
-		it('should throw an error when weight is out of range', () => {
-			expect(() => mixColors('#fff', '#000', -0.1)).toThrow('Weight must be between 0 and 1')
-			expect(() => mixColors('#fff', '#000', 1.1)).toThrow('Weight must be between 0 and 1')
-		})
-
-		it('should handle hex color inputs', () => {
-			expect(mixColors('#ff0000', '#0000ff')).toBe('rgb(128, 0, 128)')
-		})
-
-		it('should handle invalid color inputs', () => {
-			expect(() => mixColors('red', 'blue')).toThrow(TypeError)
 		})
 	})
 })
