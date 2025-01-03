@@ -48,14 +48,14 @@ listToTree(list)
 // [{"id":1,"name":"a","parentId":0,"children":[{"id":2,"name":"b","parentId":1,"children":[{"id":4,"name":"d","parentId":2,"children":[]},{"id":5,"name":"e","parentId":2,"children":[]}]},{"id":3,"name":"c","parentId":1,"children":[]}]}]
 ```
 
-### treeTolist
+### treeToList
 
 Convert a tree structure to a list of objects.
 
 将树形结构转换为对象列表。
 
 ```ts
-treeToList(tree: T[] | T, options?: OptionsM<T, R>): R[];
+treeToList(tree: T[] | T, options?: Options<T, R>): R[];
 ```
 
 #### Parameters

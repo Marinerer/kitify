@@ -83,18 +83,41 @@ Object related utility functions
 
 Processing data related utility functions
 
-| Method       | Description               |
-| ------------ | ------------------------- |
-| `listToTree` | Convert a list to a tree. |
-| `treeToList` | Convert a tree to a list. |
+| Method       | Description           |
+| ------------ | --------------------- |
+| `listToTree` | Convert list to tree. |
+| `treeToList` | Convert tree to list. |
+
+### [Color](./docs/color.md)
+
+Color related utility functions
+
+| Method               | Description                        |
+| -------------------- | ---------------------------------- |
+| `isHexColor`         | Check if the value is a hex color. |
+| `isRgbColor`         | Check if the value is a rgb color. |
+| `isHslColor`         | Check if the value is a hsl color. |
+| `isDarkColor`        | Check if the color is dark.        |
+| `isLightColor`       | Check if the color is light.       |
+| `hexToRgb`           | Convert hex color to rgb.          |
+| `rgbToHex`           | Convert rgb color to hex.          |
+| `colorRGB`           | Convert color to `[R,G,B]`.        |
+| `setColorOpacity`    | Set the opacity of the color.      |
+| `setColorBrightness` | Set the brightness of the color.   |
+| `darkenColor`        | Darken the color.                  |
+| `lightenColor`       | Lighten the color.                 |
+| `mixColors`          | Mix two colors.                    |
+| `colorComplementary` | Get the complementary color.       |
+| `colorLuminance`     | Get the luminance of the color.    |
+| `colorContrast`      | Get the contrast of the color.     |
 
 ### [DOM](./docs/dom.md)
 
 DOM related utility functions
 
-| Method                 | Description                          |
-| ---------------------- | ------------------------------------ |
-| `detectMouseDirection` | Detect the mouse movement direction. |
+| Method                 | Description                                 |
+| ---------------------- | ------------------------------------------- |
+| `detectMouseDirection` | Detect mouse movement direction in element. |
 
 ## License
 

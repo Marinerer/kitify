@@ -38,12 +38,6 @@
 			"module": "./dist/cloneLoop.mjs",
 			"require": "./dist/cloneLoop.js"
 		},
-		"./detectMouseDirection": {
-			"types": "./dist/detectMouseDirection.d.ts",
-			"import": "./dist/detectMouseDirection.mjs",
-			"module": "./dist/detectMouseDirection.mjs",
-			"require": "./dist/detectMouseDirection.js"
-		},
 		"./listToTree": {
 			"types": "./dist/listToTree.d.ts",
 			"import": "./dist/listToTree.mjs",
@@ -55,6 +49,114 @@
 			"import": "./dist/treeToList.mjs",
 			"module": "./dist/treeToList.mjs",
 			"require": "./dist/treeToList.js"
+		},
+		"./color": {
+			"types": "./dist/color.d.ts",
+			"import": "./dist/color.mjs",
+			"module": "./dist/color.mjs",
+			"require": "./dist/color.js"
+		},
+		"./colorComplementary": {
+			"types": "./dist/colorComplementary.d.ts",
+			"import": "./dist/colorComplementary.mjs",
+			"module": "./dist/colorComplementary.mjs",
+			"require": "./dist/colorComplementary.js"
+		},
+		"./colorContrast": {
+			"types": "./dist/colorContrast.d.ts",
+			"import": "./dist/colorContrast.mjs",
+			"module": "./dist/colorContrast.mjs",
+			"require": "./dist/colorContrast.js"
+		},
+		"./colorLuminance": {
+			"types": "./dist/colorLuminance.d.ts",
+			"import": "./dist/colorLuminance.mjs",
+			"module": "./dist/colorLuminance.mjs",
+			"require": "./dist/colorLuminance.js"
+		},
+		"./colorRgb": {
+			"types": "./dist/colorRgb.d.ts",
+			"import": "./dist/colorRgb.mjs",
+			"module": "./dist/colorRgb.mjs",
+			"require": "./dist/colorRgb.js"
+		},
+		"./darkenColor": {
+			"types": "./dist/darkenColor.d.ts",
+			"import": "./dist/darkenColor.mjs",
+			"module": "./dist/darkenColor.mjs",
+			"require": "./dist/darkenColor.js"
+		},
+		"./hexToRgb": {
+			"types": "./dist/hexToRgb.d.ts",
+			"import": "./dist/hexToRgb.mjs",
+			"module": "./dist/hexToRgb.mjs",
+			"require": "./dist/hexToRgb.js"
+		},
+		"./isDarkColor": {
+			"types": "./dist/isDarkColor.d.ts",
+			"import": "./dist/isDarkColor.mjs",
+			"module": "./dist/isDarkColor.mjs",
+			"require": "./dist/isDarkColor.js"
+		},
+		"./isHexColor": {
+			"types": "./dist/isHexColor.d.ts",
+			"import": "./dist/isHexColor.mjs",
+			"module": "./dist/isHexColor.mjs",
+			"require": "./dist/isHexColor.js"
+		},
+		"./isHslColor": {
+			"types": "./dist/isHslColor.d.ts",
+			"import": "./dist/isHslColor.mjs",
+			"module": "./dist/isHslColor.mjs",
+			"require": "./dist/isHslColor.js"
+		},
+		"./isLightColor": {
+			"types": "./dist/isLightColor.d.ts",
+			"import": "./dist/isLightColor.mjs",
+			"module": "./dist/isLightColor.mjs",
+			"require": "./dist/isLightColor.js"
+		},
+		"./isRgbColor": {
+			"types": "./dist/isRgbColor.d.ts",
+			"import": "./dist/isRgbColor.mjs",
+			"module": "./dist/isRgbColor.mjs",
+			"require": "./dist/isRgbColor.js"
+		},
+		"./lightenColor": {
+			"types": "./dist/lightenColor.d.ts",
+			"import": "./dist/lightenColor.mjs",
+			"module": "./dist/lightenColor.mjs",
+			"require": "./dist/lightenColor.js"
+		},
+		"./mixColors": {
+			"types": "./dist/mixColors.d.ts",
+			"import": "./dist/mixColors.mjs",
+			"module": "./dist/mixColors.mjs",
+			"require": "./dist/mixColors.js"
+		},
+		"./rgbToHex": {
+			"types": "./dist/rgbToHex.d.ts",
+			"import": "./dist/rgbToHex.mjs",
+			"module": "./dist/rgbToHex.mjs",
+			"require": "./dist/rgbToHex.js"
+		},
+		"./setColorBrightness": {
+			"types": "./dist/setColorBrightness.d.ts",
+			"import": "./dist/setColorBrightness.mjs",
+			"module": "./dist/setColorBrightness.mjs",
+			"require": "./dist/setColorBrightness.js"
+		},
+		"./setColorOpacity": {
+			"types": "./dist/setColorOpacity.d.ts",
+			"import": "./dist/setColorOpacity.mjs",
+			"module": "./dist/setColorOpacity.mjs",
+			"require": "./dist/setColorOpacity.js"
+		},
+		"./detectMouseDirection": {
+			"types": "./dist/detectMouseDirection.d.ts",
+			"import": "./dist/detectMouseDirection.mjs",
+			"module": "./dist/detectMouseDirection.mjs",
+			"require": "./dist/detectMouseDirection.js"
 		},
 		"./assign": {
 			"types": "./dist/assign.d.ts",
