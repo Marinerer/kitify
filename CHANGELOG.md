@@ -1,5 +1,30 @@
 # kitify
 
+## v0.5.0
+
+### &nbsp;&nbsp;&nbsp;🎉 Features
+
+- **color**:
+  - Add color validation and conversion functions &nbsp;-&nbsp; by **Mariner** [<samp>(7564a)</samp>](https://github.com/Marinerer/kitify/commit/7564a57)
+  - Refactor color utility functions and add new features. &nbsp;-&nbsp; by **Mariner** [<samp>(aab2e)</samp>](https://github.com/Marinerer/kitify/commit/aab2e4b)
+  - Extract luminance calculation to separate module &nbsp;-&nbsp; by **Mariner** [<samp>(8cc91)</samp>](https://github.com/Marinerer/kitify/commit/8cc9149)
+  - Add type support for RGB conversion functions &nbsp;-&nbsp; by **Mariner** [<samp>(58c6c)</samp>](https://github.com/Marinerer/kitify/commit/58c6ce6)
+
+### &nbsp;&nbsp;&nbsp;🚀 Performance
+
+- **clone**: Remove useless code &nbsp;-&nbsp; by **Mariner** [<samp>(68a7f)</samp>](https://github.com/Marinerer/kitify/commit/68a7f5a)
+
+### &nbsp;&nbsp;&nbsp;📝 Documentation
+
+- Add color utility functions and update documentation &nbsp;-&nbsp; by **Mariner** [<samp>(5586f)</samp>](https://github.com/Marinerer/kitify/commit/5586f0d)
+
+### &nbsp;&nbsp;&nbsp;♻️ Code Refactoring
+
+- **type**: Updated isObject and added isPlainObject. &nbsp;-&nbsp; by **Mariner** [<samp>(98e50)</samp>](https://github.com/Marinerer/kitify/commit/98e50c3)
+
+##### &nbsp;&nbsp;&nbsp;&nbsp;[View changes on GitHub](https://github.com/Marinerer/kitify/compare/v0.4.1...v0.5.0)
+
+
 ## v0.4.1
 
 ### &nbsp;&nbsp;&nbsp;🎉 Features
