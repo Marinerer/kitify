@@ -67,8 +67,8 @@ async function build(config, { banner, pkg }) {
 	// build esm/cjs bundle
 	const buildOptions = defineConfig({
 		input,
-		plugins: [nodeResolve(), commonjs(), json(), typescript(), resolveIndexPath()],
-		external: createdExternal(config, { dependencies, peerDependencies }),
+		plugins: [nodeResolve(), commonjs(), json(), typescript()],
+		// external: createdExternal(config, { dependencies, peerDependencies }),
 		output: [
 			{
 				file: `${filename}.${pkg.type === 'module' ? 'js' : 'mjs'}`,
@@ -93,7 +93,7 @@ async function build(config, { banner, pkg }) {
 			json(),
 			typescript({ compilerOptions: { target: 'es5' } }),
 		],
-		external: createdExternal(config, { externalMode: 'default' }),
+		// external: createdExternal(config, { externalMode: 'default' }),
 		output: {
 			file: `${filename}.min.js`,
 			format: 'iife',
