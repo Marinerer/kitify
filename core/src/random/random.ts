@@ -134,7 +134,13 @@ export function randomColor() {
  * @param end 结束日期
  * @returns
  */
-export function randomDate(start: Date | string | number, end: Date | string | number): Date {
+export function randomDate(end: Date | string | number): Date
+export function randomDate(start: Date | string | number, end: Date | string | number): Date
+export function randomDate(start: Date | string | number, end?: Date | string | number): Date {
+	if (end === undefined) {
+		end = start
+		start = new Date(0) // 默认从 1970-01-01 开始
+	}
 	const startTime = new Date(start).getTime()
 	const endTime = new Date(end).getTime()
 	return new Date(startTime + Math.random() * (endTime - startTime))
