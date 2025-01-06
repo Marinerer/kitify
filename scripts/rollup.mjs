@@ -7,6 +7,20 @@ import terser from '@rollup/plugin-terser'
 import generateDts from 'rollup-plugin-dts'
 import { tag, colors } from 'diy-log'
 
+function pluginReplace(replacements = [], condition = () => true) {
+	return {
+		name: 'plugin-replace',
+		transform(code, id) {
+			if (condition(id)) {
+				for (const [key, value] of replacements) {
+					code = code.replace(key, value)
+				}
+				return code
+			}
+		},
+	}
+}
+
 const createdExternal = (() => {
 	const externalMap = {
 		all(_, opts) {
@@ -46,11 +60,14 @@ async function build(config, { banner, pkg }) {
 	const { input, filename } = config
 	const dependencies = Object.keys(pkg.dependencies || {})
 	const peerDependencies = Object.keys(pkg.peerDependencies || {})
+	// 修复 index.ts 构建后的依赖模块路径问题
+	const resolveIndexPath = () =>
+		pluginReplace([[/\.\/\w+\/(\w+)/gi, './$1']], (id) => id.endsWith('index.ts'))
 
 	// build esm/cjs bundle
 	const buildOptions = defineConfig({
 		input,
-		plugins: [nodeResolve(), commonjs(), json(), typescript()],
+		plugins: [nodeResolve(), commonjs(), json(), typescript(), resolveIndexPath()],
 		external: createdExternal(config, { dependencies, peerDependencies }),
 		output: [
 			{
