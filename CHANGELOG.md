@@ -1,5 +1,24 @@
 # kitify
 
+## v0.5.1
+
+### &nbsp;&nbsp;&nbsp;🎉 Features
+
+- Add random utility functions &nbsp;-&nbsp; by **Mariner** in https://github.com/Marinerer/kitify/issues/1 [<samp>(c57b4)</samp>](https://github.com/Marinerer/kitify/commit/c57b424)
+- Add number utility functions &nbsp;-&nbsp; by **Mariner** [<samp>(76d64)</samp>](https://github.com/Marinerer/kitify/commit/76d640d)
+- Adds default start date support for randomDate function &nbsp;-&nbsp; by **Mariner** [<samp>(b8e0c)</samp>](https://github.com/Marinerer/kitify/commit/b8e0c7e)
+
+### &nbsp;&nbsp;&nbsp;🐞 Bug Fixes
+
+- **build**: Dependency module path issue after building index.ts &nbsp;-&nbsp; by **Mariner** [<samp>(d47ba)</samp>](https://github.com/Marinerer/kitify/commit/d47ba90)
+
+### &nbsp;&nbsp;&nbsp;📝 Documentation
+
+- Update README & color document &nbsp;-&nbsp; by **Mariner** [<samp>(23791)</samp>](https://github.com/Marinerer/kitify/commit/237916e)
+
+##### &nbsp;&nbsp;&nbsp;&nbsp;[View changes on GitHub](https://github.com/Marinerer/kitify/compare/v0.5.0...v0.5.1)
+
+
 ## v0.5.0
 
 ### &nbsp;&nbsp;&nbsp;🎉 Features
