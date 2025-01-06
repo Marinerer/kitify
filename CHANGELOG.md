@@ -1,5 +1,14 @@
 # kitify
 
+## v0.5.2
+
+### &nbsp;&nbsp;&nbsp;🐞 Bug Fixes
+
+- Import build package error &nbsp;-&nbsp; by **Mariner** [<samp>(262ce)</samp>](https://github.com/Marinerer/kitify/commit/262ce09)
+
+##### &nbsp;&nbsp;&nbsp;&nbsp;[View changes on GitHub](https://github.com/Marinerer/kitify/compare/v0.5.1...v0.5.2)
+
+
 ## v0.5.1
 
 ### &nbsp;&nbsp;&nbsp;🎉 Features
