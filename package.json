@@ -1,6 +1,7 @@
 {
 	"private": true,
 	"version": "0.0.0",
+	"type": "module",
 	"scripts": {
 		"format": "prettier --write --cache .",
 		"format-check": "prettier --check --cache .",
@@ -14,7 +15,7 @@
 	},
 	"simple-git-hooks": {
 		"pre-commit": "npx lint-staged",
-		"commit-msg": "node scripts/verifyCommit.mjs"
+		"commit-msg": "node scripts/verifyCommit.js"
 	},
 	"lint-staged": {
 		"*.{js,mjs,json,cjs}": [

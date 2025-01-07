@@ -11,17 +11,21 @@ async function readJSON(path) {
 }
 
 function updatePackage(pkg, files) {
+	const ext = {
+		esm: ['js', 'd.ts'],
+		cjs: ['cjs', 'd.cts'],
+	}
 	const modules = files.reduce((acc, file) => {
 		const filename = file.split('/').pop().replace('.ts', '')
 		if (filename !== 'index') {
 			acc[`./${filename}`] = {
 				import: {
-					types: `./dist/${filename}.d.mts`,
-					default: `./dist/${filename}.mjs`,
+					types: `./dist/${filename}.${ext.esm[1]}`,
+					default: `./dist/${filename}.${ext.esm[0]}`,
 				},
 				require: {
-					types: `./dist/${filename}.d.ts`,
-					default: `./dist/${filename}.js`,
+					types: `./dist/${filename}.${ext.cjs[1]}`,
+					default: `./dist/${filename}.${ext.cjs[0]}`,
 				},
 			}
 		}
@@ -30,12 +34,12 @@ function updatePackage(pkg, files) {
 	pkg.exports = {
 		'.': {
 			import: {
-				types: './dist/index.d.mts',
-				default: './dist/index.mjs',
+				types: `./dist/index.${ext.esm[1]}`,
+				default: `./dist/index.${ext.esm[0]}`,
 			},
 			require: {
-				types: './dist/index.d.ts',
-				default: './dist/index.js',
+				types: `./dist/index.${ext.cjs[1]}`,
+				default: `./dist/index.${ext.cjs[0]}`,
 			},
 		},
 		...modules,

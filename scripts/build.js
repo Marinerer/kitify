@@ -5,7 +5,7 @@ import { rimraf } from 'rimraf'
 import minimist from 'minimist'
 import fg from 'fast-glob'
 import { colors, symbols } from 'diy-log'
-import { rollupBuild } from './rollup.mjs'
+import { rollupBuild } from './rollup.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const args = minimist(process.argv.slice(2))
@@ -31,9 +31,9 @@ function updatePackage(pkg, libs) {
 		if (filename !== 'index') {
 			acc[`./${filename}`] = {
 				types: `./dist/${filename}.d.ts`,
-				import: `./dist/${filename}.mjs`,
-				module: `./dist/${filename}.mjs`,
-				require: `./dist/${filename}.js`,
+				import: `./dist/${filename}.js`,
+				module: `./dist/${filename}.js`,
+				require: `./dist/${filename}.cjs`,
 			}
 		}
 		return acc
@@ -41,9 +41,9 @@ function updatePackage(pkg, libs) {
 	pkg.exports = {
 		'.': {
 			types: './dist/index.d.ts',
-			import: './dist/index.mjs',
-			module: './dist/index.mjs',
-			require: './dist/index.js',
+			import: './dist/index.js',
+			module: './dist/index.js',
+			require: './dist/index.cjs',
 		},
 		...modules,
 		'./package.json': './package.json',
