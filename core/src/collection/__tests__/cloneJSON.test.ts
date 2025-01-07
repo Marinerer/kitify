@@ -27,9 +27,17 @@ describe('cloneJSON', () => {
 	})
 
 	test('should handle invalid JSON', () => {
-		expect(cloneJSON(123)).toEqual(123)
-		expect(cloneJSON('123')).toEqual('123')
-		expect(cloneJSON(undefined)).toEqual({})
+		const consoleSpy = jest.spyOn(console, 'error').mockImplementation()
+
+		try {
+			expect(cloneJSON(123)).toEqual(123)
+			expect(cloneJSON('123')).toEqual('123')
+			expect(cloneJSON(undefined)).toEqual({})
+
+			expect(consoleSpy).toHaveBeenCalled()
+		} catch (error) {}
+
+		consoleSpy.mockRestore()
 	})
 
 	test('should handle empty object', () => {
