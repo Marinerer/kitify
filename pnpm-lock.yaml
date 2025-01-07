@@ -41,9 +41,6 @@ importers:
       diy-log:
         specifier: ^2.5.2
         version: 2.5.2
-      execa:
-        specifier: ^9.5.2
-        version: 9.5.2
       fast-glob:
         specifier: ^3.3.2
         version: 3.3.2
@@ -86,6 +83,8 @@ importers:
       typescript:
         specifier: ^5.7.2
         version: 5.7.2
+
+  core: {}
 
 packages:
 
