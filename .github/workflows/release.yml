@@ -49,10 +49,10 @@ jobs:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
       - name: CI:Build
-        run: pnpm run build --docs
+        run: pnpm run build --clean --info --docs
 
       - name: Publish package to npm
-        run: pnpm publish -r --filter kitify --access public --no-git-checks
+        run: pnpm publish --filter kitify --access public --no-git-checks
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_ACCESS_TOKEN}}
 
