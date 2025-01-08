@@ -1,6 +1,6 @@
 {
 	"name": "kitify",
-	"version": "0.5.3",
+	"version": "0.5.2",
 	"description": "A JavaScript utility library that provides a whole mess of useful helper functions and supports modularity.",
 	"type": "module",
 	"main": "dist/index.js",
@@ -37,10 +37,8 @@
 		"docs"
 	],
 	"scripts": {
-		"dev": "rollup --config rollup.config.js --watch",
-		"build": "node ./build.js",
-		"build:lib": "rollup --config rollup.config.js",
-		"build:deprecated": "node ../scripts/build.js"
+		"dev": "node ./build.js --watch",
+		"build": "node ../scripts/build.js"
 	},
 	"keywords": [
 		"kitify",

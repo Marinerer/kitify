@@ -1,147 +1,127 @@
-import { rollup, defineConfig } from 'rollup'
+import { rollup } from 'rollup'
 import typescript from '@rollup/plugin-typescript'
+// import esbuild from 'rollup-plugin-esbuild'
+import babel from '@rollup/plugin-babel'
 import { nodeResolve } from '@rollup/plugin-node-resolve'
 import commonjs from '@rollup/plugin-commonjs'
 import json from '@rollup/plugin-json'
 import terser from '@rollup/plugin-terser'
 import generateDts from 'rollup-plugin-dts'
-import { tag, colors } from 'diy-log'
 
-function pluginReplace(replacements = [], condition = () => true) {
-	return {
-		name: 'plugin-replace',
-		transform(code, id) {
-			if (condition(id)) {
-				for (const [key, value] of replacements) {
-					code = code.replace(key, value)
-				}
-				return code
-			}
-		},
-	}
+function generateBanner(pkg) {
+	return (
+		'/*!\n' +
+		` * ${pkg.name} v${pkg.version}\n` +
+		` * Copyright (c) ${new Date().getFullYear()} Mariner<mengqing723@gmail.com>\n` +
+		` * Released under the ${pkg.license} License.\n` +
+		' */'
+	)
 }
 
-const createdExternal = (() => {
-	const externalMap = {
-		all(_, opts) {
-			return (id) => {
-				// 将第三方依赖和本地模块都设置为 external
-				return (
-					opts.dependencies.includes(id) ||
-					opts.peerDependencies.includes(id) ||
-					id.startsWith('./') ||
-					id.startsWith('../')
-				)
-			}
-		},
-		default(config) {
-			return config.external || []
-		},
+const extMap = ((mode) => {
+	return (format) => {
+		return format === 'dts'
+			? {
+					esm: mode === 'module' ? 'd.ts' : 'd.mts',
+					cjs: mode === 'module' ? 'd.cts' : 'd.ts',
+				}
+			: {
+					esm: mode === 'module' ? 'js' : 'mjs',
+					cjs: mode === 'module' ? 'cjs' : 'js',
+				}
 	}
-
-	return (config, options) => {
-		return externalMap[options.externalMode || config.externalMode || 'default'](config, options)
-	}
-})()
+})('module')
 
 /**
- * build
- *
- * @param {object} config 构建配置
- * @param {object} options 构建选项
- * @param {boolean} options.banner banner
- * @param {boolean} options.pkg package.json
- * @returns {Promise}
+ * 生成 output 配置
+ * @param {object} options - { filename, dir, banner }
+ * @param {string} type 'esm' | 'umd' | 'dts'
+ * @returns
  */
-async function build(config, { banner, pkg }) {
-	const startTime = Date.now()
-	// log(colors.blue(`[${config.name}] `) + 'Build start ...')
+function generateOutput(options = {}, type) {
+	const { filename, dir = 'dist', banner } = options
 
-	const { input, filename } = config
-	const dependencies = Object.keys(pkg.dependencies || {})
-	const peerDependencies = Object.keys(pkg.peerDependencies || {})
-	// 修复 index.ts 构建后的依赖模块路径问题
-	const resolveIndexPath = () =>
-		pluginReplace([[/\.\/\w+\/(\w+)/gi, './$1']], (id) => id.endsWith('index.ts'))
-
-	// build esm/cjs bundle
-	const buildOptions = defineConfig({
-		input,
-		plugins: [nodeResolve(), commonjs(), json(), typescript()],
-		// external: createdExternal(config, { dependencies, peerDependencies }),
-		output: [
-			{
-				file: `${filename}.${pkg.type === 'module' ? 'js' : 'mjs'}`,
-				format: 'es',
-				banner,
-			},
-			{
-				file: `${filename}.${pkg.type === 'module' ? 'cjs' : 'js'}`,
-				format: 'cjs',
-				banner,
-			},
-		],
-		cache: true,
-	})
-
-	// build umd/iife bundle
-	const buildUmdOptions = defineConfig({
-		input,
-		plugins: [
-			nodeResolve(),
-			commonjs(),
-			json(),
-			typescript({ compilerOptions: { target: 'es5' } }),
-		],
-		// external: createdExternal(config, { externalMode: 'default' }),
-		output: {
-			file: `${filename}.min.js`,
+	const result = {
+		dts: ['esm', 'cjs'].map((format) => {
+			const ext = extMap('dts')[format]
+			return {
+				file: `${dir}/${filename}.${ext}`,
+				format,
+			}
+		}),
+		esm: ['esm', 'cjs'].map((format) => {
+			const ext = extMap()[format]
+			return {
+				dir,
+				format,
+				entryFileNames: `[name].${ext}`,
+				chunkFileNames: `[name]-[hash].${ext}`,
+			}
+		}),
+		umd: {
+			file: `${dir}/${filename}.min.js`,
 			format: 'iife',
-			name: config.name,
+			name: filename === 'index' ? 'kitify' : filename,
 			banner,
-			plugins: [terser()],
-			globals: config.globals || {},
+			// globals: config.globals || {},
 			sourcemap: true,
 		},
-		cache: true,
-	})
-
-	// build .d.ts
-	const buildDtsOptions = defineConfig({
-		input,
-		plugins: [generateDts()],
-		output: {
-			file: `${filename}.d.ts`,
-			format: 'es',
-		},
-		cache: true,
-	})
-
-	try {
-		//! 速度提升有限
-		const tasks = [
-			async () => {
-				const bundle = await rollup(buildOptions)
-				await Promise.all(buildOptions.output.map((options) => bundle.write(options)))
-			},
-			async () => {
-				const umdBundle = await rollup(buildUmdOptions)
-				await umdBundle.write(buildUmdOptions.output)
-			},
-		]
-		if (config.dts !== false) {
-			tasks.push(async () => {
-				const dtsBundle = await rollup(buildDtsOptions)
-				await dtsBundle.write(buildDtsOptions.output)
-			})
-		}
-		await Promise.all(tasks.map((task) => task()))
-
-		tag.success(colors.blue(`[${config.name}] `) + `Build complete. (${Date.now() - startTime}ms)`)
-	} catch (error) {
-		tag.error(colors.red(`[${config.name}] `) + 'Build failed: ' + error.message)
-		throw error // 重新抛出错误以便外部处理
 	}
+	return result[type || 'esm']
 }
 
-export { build as rollupBuild }
+const buildEsmPlugins = [nodeResolve(), commonjs(), json(), typescript()]
+/**
+ * 生成 esm/cjs 文件 (多入口)
+ */
+async function buildEsm({ input, external, dir }) {
+	const buildOptions = {
+		plugins: buildEsmPlugins,
+		input,
+		output: generateOutput({ dir }, 'esm'),
+		external: external || [],
+		cache: true,
+	}
+
+	const bundle = await rollup(buildOptions)
+	await Promise.all(buildOptions.output.map((options) => bundle.write(options)))
+	bundle.close()
+}
+
+/**
+ * 生成 .d.ts 文件
+ */
+async function buildDts({ input, filename, dir }) {
+	const buildOptions = {
+		plugins: [generateDts()],
+		input,
+		output: generateOutput({ filename, dir }, 'dts'),
+		cache: true,
+	}
+	const bundle = await rollup(buildOptions)
+	await Promise.all(buildOptions.output.map((options) => bundle.write(options)))
+	bundle.close()
+}
+
+const buildUmdPlugins = [
+	babel({
+		babelHelpers: 'bundled',
+		exclude: 'node_modules/**',
+	}),
+]
+/**
+ * 基于构建后的 esm 文件生成 iife 包
+ */
+async function buildUmd({ filename, dir, banner, watch }) {
+	const buildOptions = {
+		plugins: watch ? buildUmdPlugins : buildUmdPlugins.concat(terser()),
+		input: `${dir}/${filename}.js`,
+		output: generateOutput({ filename, dir, banner }, 'umd'),
+		cache: true,
+	}
+	const bundle = await rollup(buildOptions)
+	await bundle.write(buildOptions.output)
+	bundle.close()
+}
+
+export { generateBanner, buildEsm, buildDts, buildUmd }
