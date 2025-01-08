@@ -76,8 +76,8 @@ const runRollup = (args = []) => {
 		// 监听子进程的关闭事件
 		rollupProcess.on('close', (code) => {
 			// 清理信号监听器
-			process.off('SIGINT', handleSignal)
-			process.off('SIGTERM', handleSignal)
+			process.off('SIGINT', handleSIGINT)
+			process.off('SIGTERM', handleSIGINT)
 
 			if (code === 0) {
 				const endTime = Date.now()
@@ -93,8 +93,8 @@ const runRollup = (args = []) => {
 		// 监听子进程的错误事件
 		rollupProcess.on('error', (err) => {
 			// 清理信号监听器
-			process.off('SIGINT', handleSignal)
-			process.off('SIGTERM', handleSignal)
+			process.off('SIGINT', handleSIGINT)
+			process.off('SIGTERM', handleSIGINT)
 
 			tag.error(err)
 			reject(err)
