@@ -1,7 +1,9 @@
 /**
- * 随机8位id
+ * 随机8位Id字符
+ * Generates a random 8-character ID using base-36 encoding.
+ * @returns A random ID string.
  */
-export const randomId = () => Math.floor(Math.random() * Date.now()).toString(36)
+export const randomId = (): string => Math.floor(Math.random() * Date.now()).toString(36)
 
 /**
  * 生成 uuid
@@ -9,9 +11,9 @@ export const randomId = () => Math.floor(Math.random() * Date.now()).toString(36
  */
 export function uuid() {
 	let d = Date.now()
-	if (typeof window !== 'undefined' && window.performance) {
+	/* if (typeof window !== 'undefined' && window.performance) {
 		d += performance.now() //use high-precision timer if available
-	}
+	} */
 	const uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
 		const r = (d + Math.random() * 16) % 16 | 0
 		d = Math.floor(d / 16)
@@ -33,6 +35,48 @@ export function uuid() {
  */
 export function randomInt(min: number, max: number) {
 	return Math.floor(Math.random() * (max - min + 1) + min)
+}
+
+interface RandomIntListOptions {
+	min: number
+	max: number
+	count: number
+	unique?: boolean
+	sort?: 'asc' | 'desc'
+}
+/**
+ * 生成随机整数列表
+ * @param min 最小值
+ * @param max 最大值
+ * @param count 数量
+ * @param unique 是否唯一
+ * @param sort 排序
+ * @returns
+ */
+export function randomIntList(
+	options: RandomIntListOptions = {} as RandomIntListOptions
+): number[] {
+	const { min = 0, max = 100, count = 10, unique = true, sort } = options
+
+	if (unique && count > max - min + 1) {
+		throw new Error('Count cannot be greater than the range of numbers')
+	}
+
+	let result: number[]
+	if (unique) {
+		const list = new Set<number>()
+		while (list.size < count) {
+			list.add(randomInt(min, max))
+		}
+		result = Array.from(list)
+	} else {
+		result = Array.from({ length: count }, () => randomInt(min, max))
+	}
+
+	if (sort) {
+		result.sort((a, b) => (sort === 'asc' ? a - b : b - a))
+	}
+	return result
 }
 
 /**
@@ -59,7 +103,7 @@ export function randomBool() {
  * @param characters 字符集
  * @returns
  */
-export function randomString(length: number, characters?: string) {
+export function randomChar(length: number, characters?: string) {
 	let result = ''
 	if (!characters) {
 		characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
