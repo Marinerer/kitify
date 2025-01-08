@@ -1,5 +1,28 @@
 # kitify
 
+## v0.5.3
+
+### &nbsp;&nbsp;&nbsp;🎉 Features
+
+- **random**: Add randomIntList and enhance randomId, randomChar &nbsp;-&nbsp; by **Mariner** [<samp>(2fc12)</samp>](https://github.com/Marinerer/kitify/commit/2fc129c)
+
+### &nbsp;&nbsp;&nbsp;🐞 Bug Fixes
+
+- **build**:
+  - Add SIGINT/SIGTERM handling in build process &nbsp;-&nbsp; by **Mariner** [<samp>(1809b)</samp>](https://github.com/Marinerer/kitify/commit/1809b03)
+  - Correct signal handler references in build process &nbsp;-&nbsp; by **Mariner** [<samp>(188d8)</samp>](https://github.com/Marinerer/kitify/commit/188d81f)
+
+### &nbsp;&nbsp;&nbsp;🚀 Performance
+
+- Refactor isType function with overloads &nbsp;-&nbsp; by **Mariner** [<samp>(10df3)</samp>](https://github.com/Marinerer/kitify/commit/10df36a)
+
+### &nbsp;&nbsp;&nbsp;♻️ Code Refactoring
+
+- Default esModule mode &nbsp;-&nbsp; by **Mariner** [<samp>(ba4f9)</samp>](https://github.com/Marinerer/kitify/commit/ba4f912)
+
+##### &nbsp;&nbsp;&nbsp;&nbsp;[View changes on GitHub](https://github.com/Marinerer/kitify/compare/v0.5.2...v0.5.3)
+
+
 ## v0.5.2
 
 ### &nbsp;&nbsp;&nbsp;🐞 Bug Fixes
