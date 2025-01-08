@@ -60,22 +60,42 @@ const runRollup = (args = []) => {
 			shell: true, // 使用 shell 执行命令，兼容不同操作系统
 		})
 
+		// 处理主进程的 SIGINT 信号（Ctrl+C）
+		const handleSIGINT = (signal) => {
+			console.log(`\nReceived ${signal}, cleaning up...`)
+			// 终止子进程
+			rollupProcess.kill('SIGTERM')
+			// 等待子进程结束后再退出主进程
+			process.exit(0)
+		}
+
+		// 监听 SIGINT 和 SIGTERM 信号
+		process.on('SIGINT', handleSIGINT)
+		process.on('SIGTERM', handleSIGINT)
+
 		// 监听子进程的关闭事件
 		rollupProcess.on('close', (code) => {
+			// 清理信号监听器
+			process.off('SIGINT', handleSignal)
+			process.off('SIGTERM', handleSignal)
+
 			if (code === 0) {
 				const endTime = Date.now()
 				console.log(`Build success in ${endTime - startTime}ms. ${symbols.done}`)
 				resolve()
 			} else {
-				// console.error(`Build failed with exit code ${code}.`)
-				tag.error(`Build failed with exit code ${code}.`)
-				reject()
+				const err = `Build failed with exit code ${code}.`
+				tag.error(err)
+				reject(new Error(err))
 			}
 		})
 
-		// 捕获错误
+		// 监听子进程的错误事件
 		rollupProcess.on('error', (err) => {
-			// console.error('Build error :', err)
+			// 清理信号监听器
+			process.off('SIGINT', handleSignal)
+			process.off('SIGTERM', handleSignal)
+
 			tag.error(err)
 			reject(err)
 		})
