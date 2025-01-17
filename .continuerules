@@ -6,7 +6,7 @@ Generate code, corrections, and refactorings that comply with the basic principl
 This project is a front-end utility library developed in TypeScript, offering a collection of commonly used utility functions. It adheres to stringent coding standards, encompassing naming conventions, type declarations, and commenting guidelines. Each utility function is accompanied by rigorous type definitions and comprehensive unit tests.
 
 ## Basic Principles:
-- Use Chinese for all code and documentation, except git commit messages.
+- Use Chinese for all code and documentation, except generate git commit messages.
 - Always declare the type of each variable and function (parameters and return value).
 - Avoid using any.
 - Create necessary types.
