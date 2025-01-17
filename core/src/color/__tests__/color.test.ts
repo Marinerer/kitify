@@ -16,7 +16,7 @@ import {
 	colorLuminance,
 	colorContrast,
 	colorComplementary,
-} from '../color'
+} from '../../color'
 
 /**
  * 验证颜色函数
