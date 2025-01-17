@@ -121,6 +121,7 @@ DOM related utility functions
 | Method                 | Description                                 |
 | ---------------------- | ------------------------------------------- |
 | `detectMouseDirection` | Detect mouse movement direction in element. |
+| `addInputListener`     | handle input event with composition events. |
 
 ## License
 
