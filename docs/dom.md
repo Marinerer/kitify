@@ -7,9 +7,10 @@ DOM元素相关工具函数。
 ## usage
 
 ```ts
-import { detectMouseDirection } from 'kitify'
+import { detectMouseDirection, addInputListener } from 'kitify'
 
 import detectMouseDirection from 'kitify/detectMouseDirection'
+import addInputListener from 'kitify/addInputListener'
 ```
 
 ## API
@@ -40,6 +41,28 @@ Callback = (
 - `element` - The element to detect the mouse direction.
 - `onEnter` - The callback function when the mouse enters the element.
 - `onLeave` - The callback function when the mouse leaves the element.
+
+#### returns
+
+- `() => void` - The function to remove the event listeners.
+
+### addInputListener
+
+handle input event with composition events.
+
+处理输入事件，支持中文输入法。
+
+```ts
+function addInputListener(
+	inputEl: string | HTMLInputElement,
+	callback: (value: string, event: Event) => void
+): () => void
+```
+
+#### Parameters
+
+- `inputEl` - The input element or the selector of the input element.
+- `callback` - The callback function when the input event is triggered.
 
 #### returns
 
