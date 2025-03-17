@@ -1,5 +1,27 @@
 # kitify
 
+## v0.6.0
+
+### &nbsp;&nbsp;&nbsp;🎉 Features
+
+- Add type checking utility functions &nbsp;-&nbsp; by **Mariner** [<samp>(eaccd)</samp>](https://github.com/Marinerer/kitify/commit/eaccd97)
+- Add input listener with composition event support &nbsp;-&nbsp; by **Mariner** in https://github.com/Marinerer/kitify/issues/2 [<samp>(63f55)</samp>](https://github.com/Marinerer/kitify/commit/63f5500)
+- Add `idlePerformTasks()` functions &nbsp;-&nbsp; by **Mariner** in https://github.com/Marinerer/kitify/issues/3 [<samp>(a1c74)</samp>](https://github.com/Marinerer/kitify/commit/a1c7475)
+- Add runMicrotask function &nbsp;-&nbsp; by **Mariner** in https://github.com/Marinerer/kitify/issues/5 [<samp>(90819)</samp>](https://github.com/Marinerer/kitify/commit/90819a5)
+- Add `loadResource` function &nbsp;-&nbsp; by **Mariner** in https://github.com/Marinerer/kitify/issues/6 [<samp>(d8158)</samp>](https://github.com/Marinerer/kitify/commit/d815855)
+
+### &nbsp;&nbsp;&nbsp;🚀 Performance
+
+- Optimize directory structure &nbsp;-&nbsp; by **Mariner** [<samp>(b3b40)</samp>](https://github.com/Marinerer/kitify/commit/b3b4052)
+- Remove `utils/idlePerformTasks` &nbsp;-&nbsp; by **Mariner** [<samp>(9ef33)</samp>](https://github.com/Marinerer/kitify/commit/9ef332f)
+
+### &nbsp;&nbsp;&nbsp;♻️ Code Refactoring
+
+- Replace idlePerformTasks with performTask &nbsp;-&nbsp; by **Mariner** in https://github.com/Marinerer/kitify/issues/4 [<samp>(5bf8b)</samp>](https://github.com/Marinerer/kitify/commit/5bf8b9d)
+
+##### &nbsp;&nbsp;&nbsp;&nbsp;[View changes on GitHub](https://github.com/Marinerer/kitify/compare/v0.5.3...v0.6.0)
+
+
 ## v0.5.3
 
 ### &nbsp;&nbsp;&nbsp;🎉 Features
