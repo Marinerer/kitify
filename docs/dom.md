@@ -11,9 +11,10 @@ import { detectMouseDirection, addInputListener } from 'kitify'
 
 import detectMouseDirection from 'kitify/detectMouseDirection'
 import addInputListener from 'kitify/addInputListener'
+import loadResource from 'kitify/loadResource'
 ```
 
-## API
+## Functions
 
 ### detectMouseDirection
 
@@ -67,3 +68,45 @@ function addInputListener(
 #### returns
 
 - `() => void` - The function to remove the event listeners.
+
+### loadResource
+
+Static resource loading function, support `img`, `script`, `link` tags.
+
+静态资源加载函数，支持 `img`、`script`、`link` 标签，且智能检测已存在资源，避免重复加载。
+
+```ts
+function loadResource(
+	url: string,
+	options?: T | IOptions<T>
+):
+	| {
+			element: TagElementMap[T]
+			clean: () => void
+	  }
+	| undefined
+```
+
+#### Parameters
+
+- `url` (string): The URL of the resource to load
+- `options` (Object|string): Configuration options（`'img'|'script'|'link'`）
+
+#### Options
+
+| 选项         | 类型        | 默认值                       | 描述                                             |
+| ------------ | ----------- | ---------------------------- | ------------------------------------------------ |
+| `tag`        | string      | 'img'                        | Resource Label Type（`'img'、'script'、'link'`） |
+| `attributes` | Object      | { crossorigin: 'anonymous' } | HTML attributes                                  |
+| `async`      | boolean     | true                         | Whether to load scripts asynchronously           |
+| `defer`      | boolean     | false                        | Whether to delay loading scripts                 |
+| `timeout`    | number      | 0                            | Load timeout (ms). 0 indicates no timeout        |
+| `onload`     | function    | -                            | Success callback                                 |
+| `onerror`    | function    | -                            | Failed callback                                  |
+| `checkExist` | boolean     | true                         | Whether to check if the resource already exists  |
+| `appendTo`   | HTMLElement | document.body/head           | Attach resources to the DOM element              |
+
+#### returns
+
+- `element`: Tag element
+- `clean`: Cleanup function

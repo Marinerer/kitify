@@ -42,6 +42,16 @@ clone({ a: 1, b: 2 }) // { a: 1, b: 2 }
 
 ## API
 
+### [DOM](./docs/dom.md)
+
+DOM related utility functions
+
+| Method                 | Description                                 |
+| ---------------------- | ------------------------------------------- |
+| `detectMouseDirection` | Detect mouse movement direction in element. |
+| `addInputListener`     | handle input event with composition events. |
+| `loadResource`         | Static resource load function.              |
+
 ### [Type](./docs/type.md)
 
 Provides some methods for interpreting data types.
@@ -113,15 +123,6 @@ Color related utility functions
 | `colorComplementary` | Get the complementary color.       |
 | `colorLuminance`     | Get the luminance of the color.    |
 | `colorContrast`      | Get the contrast of the color.     |
-
-### [DOM](./docs/dom.md)
-
-DOM related utility functions
-
-| Method                 | Description                                 |
-| ---------------------- | ------------------------------------------- |
-| `detectMouseDirection` | Detect mouse movement direction in element. |
-| `addInputListener`     | handle input event with composition events. |
 
 ## License
 
