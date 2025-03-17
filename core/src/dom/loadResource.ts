@@ -1,13 +1,23 @@
-interface IOptions {
-	tag?: 'img' | 'script' | 'link'
+interface TagElementMap {
+	img: HTMLImageElement
+	script: HTMLScriptElement
+	link: HTMLLinkElement
+}
+interface IOptions<T extends keyof TagElementMap> {
+	tag: T
 	attributes?: Record<string, string>
 	async?: boolean
 	defer?: boolean
 	timeout?: number
-	onload?: (el: HTMLElement, clean: () => void, event?: Event) => void
-	onerror?: (el: HTMLElement, event?: Event) => void
+	onload?: (el: TagElementMap[T], clean: () => void, event?: Event) => void
+	onerror?: (el: TagElementMap[T], event?: Event) => void
 	checkExist?: boolean
 	appendTo?: HTMLElement
+}
+// type ResourceElement = HTMLImageElement | HTMLScriptElement | HTMLLinkElement
+interface TagHandler<T extends keyof TagElementMap> {
+	get: (url: string) => string
+	setUrl: (el: TagElementMap[T], url: string) => void
 }
 
 const LOAD_STATUS = {
@@ -16,36 +26,39 @@ const LOAD_STATUS = {
 	ERROR: 'error',
 } as const
 
-const defaults = {
+const defaults: IOptions<'img'> = {
 	tag: 'img', //img, script, link
 	attributes: {
 		crossorigin: 'anonymous',
-	},
+	} as IOptions<'img'>['attributes'],
 	async: true,
 	defer: false,
 	timeout: 0,
-	onload: null,
-	onerror: null,
 	checkExist: true,
 	appendTo: document.body,
 }
 
-const handlers = {
+const handlers: {
+	[T in keyof TagElementMap]: TagHandler<T>
+} = {
 	img: {
-		get: (u: string) => `img[src="${u}"]`,
-		setUrl: (el: HTMLImageElement, url: string) => (el.src = url),
+		get: (u) => `img[src="${u}"]`,
+		setUrl: (el, url) => (el.src = url),
 	},
 	script: {
-		get: (u: string) => `script[src="${u}"]`,
-		setUrl: (el: HTMLScriptElement, url: string) => (el.src = url),
+		get: (u) => `script[src="${u}"]`,
+		setUrl: (el, url) => (el.src = url),
 	},
 	link: {
-		get: (u: string) => `link[href="${u}"]`,
-		setUrl: (el: HTMLLinkElement, url: string) => (el.href = url),
+		get: (u) => `link[href="${u}"]`,
+		setUrl: (el, url) => (el.href = url),
 	},
 }
 
-export function loadResource(url: string, options: IOptions = {}) {
+export function loadResource<T extends keyof TagElementMap>(
+	url: string,
+	options: IOptions<T> = {} as IOptions<T>
+) {
 	if (!url || typeof url !== 'string') {
 		throw new Error('Invalid url')
 	}
@@ -53,9 +66,9 @@ export function loadResource(url: string, options: IOptions = {}) {
 		options.appendTo = document.head
 	}
 
-	const opts = { ...defaults, ...options }
-	const tag = opts.tag.toLowerCase()
-	const handler = handlers[tag as keyof typeof handlers]
+	const opts = { ...defaults, ...options } as IOptions<T>
+	const tag = opts.tag.toLowerCase() as T
+	const handler = handlers[tag]
 
 	if (!handler) {
 		throw new Error('Invalid tag')
@@ -63,7 +76,7 @@ export function loadResource(url: string, options: IOptions = {}) {
 
 	// 检查资源是否已存在
 	if (opts.checkExist) {
-		const existEl = document.querySelector(handler.get(url)) as HTMLElement
+		const existEl = document.querySelector(handler.get(url)) as TagElementMap[T]
 		if (existEl) {
 			const status = existEl.getAttribute('data-load-status')
 			const clean = () => existEl.parentNode?.removeChild(existEl)
@@ -77,7 +90,7 @@ export function loadResource(url: string, options: IOptions = {}) {
 				return result
 			}
 			if (status === 'error') {
-				opts.onerror?.(existEl, new Error('Resource previously failed to load'))
+				opts.onerror?.(existEl, new ErrorEvent('Resource previously failed to load'))
 				clean()
 				return
 			}
@@ -85,15 +98,15 @@ export function loadResource(url: string, options: IOptions = {}) {
 		}
 	}
 
-	let timeoutId
-	const suffix = url.split('/').pop().split('?')[0].split('.').pop()
-	const el = document.createElement(tag)
+	let timeoutId: number | null = null
+	const suffix = url.split('/').pop()?.split('?')[0].split('.').pop()
+	const el = document.createElement(tag) as TagElementMap[T]
 	el.setAttribute('data-load-status', 'loading')
 
 	// 设置必须属性
 	if (tag === 'link' && suffix === 'css') {
-		el.rel = 'stylesheet'
-		el.type = 'text/css'
+		;(el as TagElementMap['link']).rel = 'stylesheet'
+		;(el as TagElementMap['link']).type = 'text/css'
 	}
 	// 设置自定义属性
 	for (const attr in opts.attributes) {
@@ -103,11 +116,11 @@ export function loadResource(url: string, options: IOptions = {}) {
 	}
 	// 设置 script 加载属性
 	if (tag === 'script') {
-		if (opts.async) el.async = true
-		if (opts.defer) el.defer = true
+		if (opts.async) (el as TagElementMap['script']).async = true
+		if (opts.defer) (el as TagElementMap['script']).defer = true
 	}
 
-	function handleLoad(event) {
+	function handleLoad(event: Event) {
 		if (timeoutId) {
 			clearTimeout(timeoutId)
 			timeoutId = null
@@ -116,7 +129,7 @@ export function loadResource(url: string, options: IOptions = {}) {
 		opts.onload?.(el, clean, event)
 	}
 
-	function handleError(event) {
+	function handleError(event: Event) {
 		if (timeoutId) {
 			clearTimeout(timeoutId)
 			timeoutId = null
@@ -137,10 +150,10 @@ export function loadResource(url: string, options: IOptions = {}) {
 		}
 	}
 
-	if (opts.timeout > 0) {
-		timeoutId = setTimeout(() => {
+	if (opts.timeout! > 0) {
+		timeoutId = window.setTimeout(() => {
 			if (el.getAttribute('data-load-status') === 'loading') {
-				handleError(new Error(`Timeout: ${url}`))
+				handleError(new ErrorEvent(`Timeout: ${url}`))
 			}
 		}, opts.timeout)
 	}
