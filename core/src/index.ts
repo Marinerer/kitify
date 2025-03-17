@@ -18,4 +18,4 @@ export { default as treeToList } from './data/treeToList'
 export * from './color'
 
 // dom
-export { default as detectMouseDirection } from './dom/detectMouseDirection'
+export * from './dom'
