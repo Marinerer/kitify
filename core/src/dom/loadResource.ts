@@ -3,6 +3,7 @@ interface TagElementMap {
 	script: HTMLScriptElement
 	link: HTMLLinkElement
 }
+
 interface IOptions<T extends keyof TagElementMap> {
 	tag: T
 	attributes?: Record<string, string>
@@ -10,11 +11,11 @@ interface IOptions<T extends keyof TagElementMap> {
 	defer?: boolean
 	timeout?: number
 	onload?: (el: TagElementMap[T], clean: () => void, event?: Event) => void
-	onerror?: (el: TagElementMap[T], event?: Event) => void
+	onerror?: (el: TagElementMap[T], err?: Error) => void
 	checkExist?: boolean
 	appendTo?: HTMLElement
 }
-// type ResourceElement = HTMLImageElement | HTMLScriptElement | HTMLLinkElement
+
 interface TagHandler<T extends keyof TagElementMap> {
 	get: (url: string) => string
 	setUrl: (el: TagElementMap[T], url: string) => void
@@ -81,7 +82,7 @@ export function loadResource<T extends keyof TagElementMap>(
 			const status = existEl.getAttribute('data-load-status')
 			const clean = () => existEl.parentNode?.removeChild(existEl)
 
-			if (!status || status === 'loaded') {
+			if (!status || status === LOAD_STATUS.LOADED) {
 				const result = {
 					element: existEl,
 					clean,
@@ -89,19 +90,19 @@ export function loadResource<T extends keyof TagElementMap>(
 				opts.onload?.(result.element, result.clean)
 				return result
 			}
-			if (status === 'error') {
-				opts.onerror?.(existEl, new ErrorEvent('Resource previously failed to load'))
+			if (status === LOAD_STATUS.ERROR) {
+				opts.onerror?.(existEl, new Error('Resource previously failed to load'))
 				clean()
 				return
 			}
-			if (status === 'loading') return
+			if (status === LOAD_STATUS.LOADING) return
 		}
 	}
 
 	let timeoutId: number | null = null
 	const suffix = url.split('/').pop()?.split('?')[0].split('.').pop()
 	const el = document.createElement(tag) as TagElementMap[T]
-	el.setAttribute('data-load-status', 'loading')
+	el.setAttribute('data-load-status', LOAD_STATUS.LOADING)
 
 	// 设置必须属性
 	if (tag === 'link' && suffix === 'css') {
@@ -125,17 +126,24 @@ export function loadResource<T extends keyof TagElementMap>(
 			clearTimeout(timeoutId)
 			timeoutId = null
 		}
-		el.setAttribute('data-load-status', 'loaded')
+		el.setAttribute('data-load-status', LOAD_STATUS.LOADED)
 		opts.onload?.(el, clean, event)
 	}
 
-	function handleError(event: Event) {
+	// 处理错误事件
+	function handleError(event: Event | Error) {
+		// 清除定时器
 		if (timeoutId) {
 			clearTimeout(timeoutId)
 			timeoutId = null
 		}
-		el.setAttribute('data-load-status', 'error')
-		opts.onerror?.(el, event)
+		// 设置元素状态为加载失败
+		el.setAttribute('data-load-status', LOAD_STATUS.ERROR)
+		opts.onerror?.(
+			el,
+			event instanceof Error ? event : new Error(`Failed to load resource: ${url}`)
+		)
+		// 解绑事件并清除元素
 		clean()
 	}
 
@@ -152,8 +160,8 @@ export function loadResource<T extends keyof TagElementMap>(
 
 	if (opts.timeout! > 0) {
 		timeoutId = window.setTimeout(() => {
-			if (el.getAttribute('data-load-status') === 'loading') {
-				handleError(new ErrorEvent(`Timeout: ${url}`))
+			if (el.getAttribute('data-load-status') === LOAD_STATUS.LOADING) {
+				handleError(new Error(`Timeout: ${url}`))
 			}
 		}, opts.timeout)
 	}
