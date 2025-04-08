@@ -163,7 +163,7 @@ async function buildAll(files, { dir = 'dist', pkg, watch }) {
 
 	const pkg = await readJSON('package.json')
 	const files = args.input
-		? args.input.split(',')
+		? await fg(args.input.split(','))
 		: await fg(['src/*.ts', 'src/*/*.ts', '!src/**/_*.ts'])
 
 	await buildAll(files, { dir, pkg, watch: args.watch })
