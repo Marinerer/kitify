@@ -44,7 +44,7 @@ clone({ a: 1, b: 2 }) // { a: 1, b: 2 }
 
 ### [DOM](./docs/dom.md)
 
-DOM related utility functions
+DOM Methods
 
 | Method                 | Description                                 |
 | ---------------------- | ------------------------------------------- |
@@ -73,9 +73,17 @@ Provides some methods for interpreting data types.
 | `isEmpty`     | Check if the value is empty.                 |
 | `isInvalid`   | Check if the value is invalid.               |
 
+### [Function](./docs/function.md)
+
+Function Methods
+| Method | Description |
+| ----------- | ------------------------------------------------------------------------------- |
+| `debounce` | Debounce a function. |
+| `throttle` | Throttle a function. |
+
 ### [Collection](./docs/collection.md)
 
-Collection related utility functions
+Collection Methods
 
 | Method      | Description                                             |
 | ----------- | ------------------------------------------------------- |
@@ -86,7 +94,7 @@ Collection related utility functions
 
 ### [Object](./docs/object.md)
 
-Object related utility functions
+Object Methods
 
 | Method   | Description                      |
 | -------- | -------------------------------- |
@@ -94,7 +102,7 @@ Object related utility functions
 
 ### [Data](./docs/data.md)
 
-Processing data related utility functions
+Data Methods
 
 | Method       | Description           |
 | ------------ | --------------------- |
@@ -103,7 +111,7 @@ Processing data related utility functions
 
 ### [Color](./docs/color.md)
 
-Color related utility functions
+Color Methods
 
 | Method               | Description                        |
 | -------------------- | ---------------------------------- |
