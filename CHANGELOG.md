@@ -1,5 +1,19 @@
 # kitify
 
+## v0.7.0
+
+### &nbsp;&nbsp;&nbsp;🎉 Features
+
+- Add `isPromiseLike` function &nbsp;-&nbsp; by **Mervin** in https://github.com/Marinerer/kitify/issues/7 [<samp>(03699)</samp>](https://github.com/Marinerer/kitify/commit/0369942)
+- **function**: Add debounce and throttle utility functions &nbsp;-&nbsp; by **Mervin** in https://github.com/Marinerer/kitify/issues/8 [<samp>(6ab54)</samp>](https://github.com/Marinerer/kitify/commit/6ab5456)
+
+### &nbsp;&nbsp;&nbsp;📝 Documentation
+
+- Update README &nbsp;-&nbsp; by **Mervin** [<samp>(aaf8d)</samp>](https://github.com/Marinerer/kitify/commit/aaf8d41)
+
+##### &nbsp;&nbsp;&nbsp;&nbsp;[View changes on GitHub](https://github.com/Marinerer/kitify/compare/v0.6.0...v0.7.0)
+
+
 ## v0.6.0
 
 ### &nbsp;&nbsp;&nbsp;🎉 Features
