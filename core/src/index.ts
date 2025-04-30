@@ -1,21 +1,23 @@
 // type
 export * from './type/type'
 
-// object
-export { default as assign } from './object/assign'
-
-// collection
-export { default as clone } from './collection/clone'
-export { default as cloneDeep } from './collection/cloneDeep'
-export { default as cloneLoop } from './collection/cloneLoop'
-export { default as cloneJSON } from './collection/cloneJSON'
-
-// data
-export { default as listToTree } from './data/listToTree'
-export { default as treeToList } from './data/treeToList'
+// dom
+export * from './dom'
 
 // color
 export * from './color'
 
-// dom
-export * from './dom'
+// random
+export * from './random'
+
+// function
+export * from './functions'
+
+// object
+export * from './object'
+
+// collection
+export * from './collection'
+
+// data
+export * from './data'
