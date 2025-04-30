@@ -1,5 +1,14 @@
 # kitify
 
+## v0.7.1
+
+### &nbsp;&nbsp;&nbsp;♻️ Code Refactoring
+
+- Consolidate exports and improve project structure &nbsp;-&nbsp; by **Mariner** [<samp>(af417)</samp>](https://github.com/Marinerer/kitify/commit/af417b4)
+
+##### &nbsp;&nbsp;&nbsp;&nbsp;[View changes on GitHub](https://github.com/Marinerer/kitify/compare/v0.7.0...v0.7.1)
+
+
 ## v0.7.0
 
 ### &nbsp;&nbsp;&nbsp;🎉 Features
