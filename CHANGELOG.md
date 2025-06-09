@@ -1,5 +1,14 @@
 # kitify
 
+## v0.8.0
+
+### &nbsp;&nbsp;&nbsp;🎉 Features
+
+- **data**: Add transformTree & findPath Function &nbsp;-&nbsp; by **Mariner** in https://github.com/Marinerer/kitify/issues/10 [<samp>(efa53)</samp>](https://github.com/Marinerer/kitify/commit/efa531d)
+
+##### &nbsp;&nbsp;&nbsp;&nbsp;[View changes on GitHub](https://github.com/Marinerer/kitify/compare/v0.7.1...v0.8.0)
+
+
 ## v0.7.1
 
 ### &nbsp;&nbsp;&nbsp;♻️ Code Refactoring
