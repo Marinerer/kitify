@@ -104,10 +104,12 @@ Object Methods
 
 Data Methods
 
-| Method       | Description           |
-| ------------ | --------------------- |
-| `listToTree` | Convert list to tree. |
-| `treeToList` | Convert tree to list. |
+| Method          | Description                                                              |
+| --------------- | ------------------------------------------------------------------------ |
+| `listToTree`    | Convert list to tree.                                                    |
+| `treeToList`    | Convert tree to list.                                                    |
+| `transformTree` | Transform a tree structure by applying a function to each node.          |
+| `findPath`      | Find the path from the root node to the target node in a tree structure. |
 
 ### [Color](./docs/color.md)
 
