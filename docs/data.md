@@ -65,3 +65,41 @@ treeToList(tree: T[] | T, options?: Options<T, R>): R[];
   - `childrenKey`: The key for the children array. Default is `'children'`.
   - `removeChildren`: Whether to remove the children key from the transformed node. Default is `true`.
   - `transform`: A function to transform each node in the tree. Default is `(node) => node`.
+
+### transformTree
+
+Transform a tree structure by applying a function to each node.
+
+转换树形结构数据，将每个节点应用于指定的转换函数。
+
+```ts
+transformTree(tree: T[], transformer: (node: T) => any, options): any[]
+```
+
+#### Parameters
+
+- `tree`: The tree structure to transform.
+- `transformer`: A function to transform each node in the tree.
+- `options`: Optional configuration options.
+  - `childKey`: The key for the children array. Default is `'children'`.
+  - `childProp`: The property name to store the transformed children. Default is `'children'`.
+  - `filter`: A function to filter nodes. Default is `(node) => true`.
+
+### findPath
+
+Find the path from the root node to the target node in a tree structure.
+
+在树形结构中查找从根节点到目标节点的路径。
+
+```ts
+findPath(tree: T[], value: T[K] | (node: T) => boolean, options): any[];
+```
+
+#### Parameters
+
+- `tree`: The tree structure to search.
+- `value`: The value to search for.
+- `options`: Optional configuration options.
+  - `key`: The key to use for the value. Default is `'value'`.
+  - `children`: The key for the children array. Default is `'children'`.
+  - `transformer`: A function to transform each node in the tree. Default is `(node) => node`.
